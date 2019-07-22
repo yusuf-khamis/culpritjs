@@ -1,0 +1,31 @@
+{
+  "name": "culpritjs",
+  "description": "JavaScript validation inspired by Laravel validation",
+  "version": "1.0.6",
+  "scripts": {
+    "test": "mocha || true"
+  },
+  "main": "lib/index.js",
+  "files": [
+    "lib/",
+    "index.d.ts"
+  ],
+  "dependencies": {
+    "moment-timezone": "^0.5.23"
+  },
+  "license": "MIT",
+  "keywords": [
+    "validation",
+    "validate",
+    "browser",
+    "browser-validation",
+    "laravel",
+    "laravel-validation",
+    "schema",
+    "complete-validator"
+  ],
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "types": "./index.d.ts"
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>culpritjs - Documentation</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="culpritjs/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css?family=Sarina|Montserrat|Pacifico" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.4/css/uikit.min.css" integrity="sha256-G66o77qJG9dog1VA0ejje21/X4aFcNpDn8sqnajd/GI=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/darcula.min.css" integrity="sha256-6LPwXdYTX9fW/QBOmpsdnGBFIIumODzzBSo04uuTBdg=" crossorigin="anonymous" />
+
+    <style>
+        .white-color {
+            color: #fefefe;
+        }
+        .overflow-y-auto {
+            overflow-y: auto;
+        }
+        .site-font {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+        .name-font {
+            font-family: 'Sarina', cursive;
+        }
+        .style-font {
+            font-family: 'Pacifico', cursive;
+        }
+        #parent {
+            min-height: 100vh;
+        }
+        #home {
+            color: #fefefe;
+        }
+        #home:hover {
+            color: #ffffff;
+        }
+        #content {
+            min-height: 350px;
+            height: calc(100vh - 80px);
+        }
+        .tm-navbar-container:not(.uk-navbar-transparent) {
+            background: linear-gradient(to left, #28a5f5, #1e87f0);
+        }
+    </style>
+</head>
+<body>
+    <div id="parent">
+        <nav class="uk-navbar-container tm-navbar-container uk-background-primary" uk-navbar>
+            <div class="uk-navbar-left">
+                <span class="uk-padding-small white-color uk-hidden@s">
+                    <i class="fas fa-bars fa-2x"></i>
+                </span>
+                <a id="home" onclick="scroller.toY(0); return false;" class="uk-navbar-item uk-logo white-color name-font">culpritjs</a>
+            </div>
+            <div class="uk-navbar-right">
+                <div class="uk-navbar-item white-color">v1.0.6</div>
+            </div>
+        </nav>
+        <div id="content">
+            <div class="uk-grid-small uk-height-1-1" uk-grid>
+                <div class="uk-width-1-4@m uk-width-1-3@s uk-visible@s uk-height-1-1 uk-overflow-auto uk-padding">
+                    <div>
+                        <ul class="uk-nav-primary uk-nav-parent-icon" uk-nav>
+                            <li class="site-font"><a onclick="scroller.to(document.getElementById('introduction')); return false;">Introduction</a></li>
+                            <li class="site-font"><a onclick="scroller.to(document.getElementById('installation')); return false;">Installation</a></li>
+                            <li class="site-font"><a onclick="scroller.to(document.getElementById('basic-usage')); return false;">Basic usage</a></li>
+                            <li class="uk-parent site-font">
+                                <a>API</a>
+                                <ul class="uk-nav-sub">
+                                    <li class="site-font"><a onclick="scroller.to(document.getElementById('validate-fn')); return false;">validate()</a></li>
+                                </ul>
+                            </li>
+                            <li class="site-font"><a onclick="scroller.to(document.getElementById('licence')); return false;">Licence</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="section" class="uk-width-expand uk-height-1-1 overflow-y-auto uk-position-relative uk-padding">
+                    <div id="introduction" class="uk-margin-large-bottom">
+                        <h2 class="site-font">Introduction</h2>
+                        <p class="site-font">
+                            <span class="name-font">culpritjs</span> &nbsp; is <em>JavaScript</em> validation library inspired by
+                            <a class="uk-link uk-link-muted" href="https://laravel.com/docs/5.7/validation" rel="noopener noreferrer" target="_blank">Laravel Validation</a>.
+                            After trying several validation libraries and spending some time on each, I just came to realise each library I used had its own
+                            thing or two that didn't align very well with my expectations, so they weren't good enough for me. And having interacted with
+                            <a class="uk-link uk-link-muted" href="https://laravel.com/" rel="noopener noreferrer" target="_blank">Laravel</a>
+                            and liked its validation methods, I decided to build one just like it and added all the features i thought I
+                            needed or will need, then decided to publish it to help folks out there who might have gone through what I have.
+                        </p>
+                    </div>
+
+                    <div id="installation" class="uk-margin-large-bottom">
+                        <h2 class="site-font">Installation</h2>
+                        <div>
+                            <pre class="uk-padding-remove"><code class="bash">npm install culpritjs --save</code></pre>
+                        </div>
+                    </div>
+
+                    <div id="basic-usage" class="uk-margin-large-bottom">
+                        <h2 class="site-font">Basic usage</h2>
+                        <div>
+                            <p class="site-font">
+                                <span class="name-font">culpritjs</span> &nbsp; allows typescript usage. The bare minimum usage
+                                of <span class="name-font">culpritjs</span> &nbsp; is initializing the validation schema and
+                                calling the validate function on the object or form data to be validated against the schema.
+                            </p>
+
+                            <p class="site-font uk-text-bold">Schema declaration:</p>
+                            <pre class="uk-padding-remove"><code class="typescript">const schema = {
+    firstName: 'required|string|max:50',
+    lastName: 'required|string|max:50',
+    email: 'required|string|email|max:50',
+};</code></pre>
+
+                            <p class="site-font uk-margin-medium-top uk-text-bold">TypeScript import:</p>
+                            <pre class="uk-padding-remove"><code class="typescript">import { validate } from 'culpritjs';</code></pre>
+
+                            <p class="site-font uk-margin-medium-top uk-text-bold">JavaScript import:</p>
+                            <pre class="uk-padding-remove"><code class="javascript">const validate = require('culpritjs');</code></pre>
+
+                            <p class="site-font uk-margin-medium-top uk-text-bold">Validate function:</p>
+                            <pre class="uk-padding-remove"><code class="javascript">const result = validate(obj, schema);</code></pre>
+
+                            <p class="site-font uk-margin-medium-top">
+                                Results returns an object with two properties i.e. <em class="uk-text-bold">value</em> which is an object containing the
+                                properties which have been validated and <em class="uk-text-bold">errors</em> which contains an array of errors or null
+                                if there are no errors
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="api" class="uk-margin-large-bottom">
+                        <h2 class="site-font">API</h2>
+                        <div class="uk-padding-small">
+                            <div id="validate-fn">
+                                <h3 class="site-font">validate()</h3>
+                                <div>
+                                    <p class="site-font uk-margin-medium-top">
+                                        This function takes in four parameters:
+                                    </p>
+                                    <ul class="uk-list uk-list-bullet">
+                                        <li class="site-font">
+                                            <strong>object</strong>
+                                            -
+                                            The main object with properties to be validated against
+                                        </li>
+                                        <li class="site-font">
+                                            <strong>schema</strong>
+                                            -
+                                            The object with schema to be used in validation
+                                        </li>
+                                        <li class="site-font">
+                                            <strong>extraArgs</strong>
+                                            -
+                                            Extra arguments passed to be used in validation as extra restrictions
+                                        </li>
+                                        <li class="site-font">
+                                            <strong>messages</strong>
+                                            -
+                                            Custom error messages to be used
+                                        </li>
+                                    </ul>
+
+                                    <p class="site-font uk-margin-medium-top">
+                                        Returns an object with two properties:
+                                    </p>
+                                    <ul class="uk-list uk-list-bullet">
+                                        <li class="site-font">
+                                            <strong>value</strong>
+                                            -
+                                            Object containing values that were validated. This properties contains
+                                            only the properties that were in the schema but the initial passed object
+                                            is not overridden, this will just be a copy. The values will be converted
+                                            to their respective validation types rules e.g. if the value was originally
+                                            a <em>string</em> in the initial object but being validated as a
+                                            number, this object will contain the value in <em>number</em>.
+                                        </li>
+                                        <li class="site-font">
+                                            <strong>errors</strong>
+                                            -
+                                            This is an array of all error messages from the validation, if there are none,
+                                            this property is usually null.
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="uk-margin-left uk-margin-medium-top">
+                                    <h4 class="site-font uk-text-bold uk-margin-remove">object</h4>
+
+                                    <p class="site-font">
+                                        This is the main object passed that has values to be validated. This object can be
+                                        either a valid <strong>JSON</strong> object or a <strong>FormData</strong> object.
+                                    </p>
+                                    <p class="site-font">
+
+                                    </p>
+                                </div>
+
+                                <div class="uk-margin-left uk-margin-medium-top">
+                                    <h4 class="site-font uk-text-bold uk-margin-remove">schema</h4>
+
+                                    <p class="site-font">
+                                        This is an object schema containing all validation rules that will be used in validating.
+                                        The
+                                    </p>
+                                    <p class="site-font">
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="licence" class="uk-margin-large-bottom">
+                        <h2 class="site-font">Licence</h2>
+                        <div>
+                            <p class="uk-text-bold uk-text-lead site-font">MIT</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="uk-text-large style-font">Happy coding!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.4/js/uikit.min.js" integrity="sha256-JJgdoUCEwWBuvXW08W3EvBgfVEHoPt82Nje/+DXrDGs=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zenscroll/4.0.2/zenscroll-min.js" integrity="sha256-P3WAuks0zjjUNJHAQsa3qo5fMU1+d3flCMCI9vGK9So=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        window.scroller = zenscroll.createScroller(document.getElementById('section'));
+
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>
