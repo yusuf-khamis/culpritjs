@@ -1,7 +1,7 @@
 {
   "name": "culpritjs",
   "description": "JavaScript validation inspired by Laravel validation",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "scripts": {
     "test": "mocha || true"
   },
@@ -22,7 +22,8 @@
     "laravel",
     "laravel-validation",
     "schema",
-    "complete-validator"
+    "culprit",
+    "culpritjs"
   ],
   "devDependencies": {
     "mocha": "^5.2.0"
