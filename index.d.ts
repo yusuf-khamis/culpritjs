@@ -1,4 +1,4 @@
-declare module 'complete-validator' {
+declare module 'culpritjs' {
 
     /**
      * ValidationResults
