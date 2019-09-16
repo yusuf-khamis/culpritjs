@@ -1,35 +1,44 @@
-const assert = require('assert');
-const validator = require('../../lib/types/boolean');
-const messages = require('../../lib/messages');
+const validator = require('../../lib/types/boolean')
+const obj = require('../object')
 
-describe('boolean', function () {
-    const value1 = false;
-    const value2 = true;
-    
-    let errorMessages = [];
+describe('boolean', () => {
+  describe('accepted', () => {
+    const acceptedErrorMessages = []
 
-    describe('accepted', function () {
-        errorMessages = [];
-        
-        it('should return false for ' + value1, function () {
-            assert.strictEqual(validator('bool_key', { bool_key: value1 }, 'accepted', '', errorMessages, messages.boolean.accepted), false);
-        });
+    test('accepted for boolean true value should return true', () => {
+      expect(validator('propBooleanTrue', obj, 'accepted', '', acceptedErrorMessages, '')).toBe(true)
+    })
 
-        it('should return true for ' + value2, function () {
-            assert.strictEqual(validator('bool_key', { bool_key: value2 }, 'accepted', '', errorMessages, messages.boolean.accepted), true);
-        });
-    });
+    test('accepted for boolean false value should return false', () => {
+      expect(validator('propBooleanFalse', obj, 'accepted', '', acceptedErrorMessages, '')).toBe(false)
+    })
 
-    describe('not_accepted', function () {
-        errorMessages = [];
+    test('accepted for string true value should return false', () => {
+      expect(validator('propStringTrue', obj, 'accepted', '', acceptedErrorMessages, '')).toBe(false)
+    })
 
-        it('should return true for ' + value1, function () {
-            assert.strictEqual(validator('bool', { bool: value1 }, 'not_accepted', '', errorMessages, messages.boolean.accepted), true);
-        });
+    test('not_accepted for boolean true value should return false', () => {
+      expect(validator('propBooleanTrue', obj, 'not_accepted', '', acceptedErrorMessages, '')).toBe(false)
+    })
 
-        it('should return false for ' + value2, function () {
-            assert.strictEqual(validator('bool', { bool: value2 }, 'not_accepted', '', errorMessages, messages.boolean.accepted), false);
-        });
-    });
+    test('not_accepted for boolean false value should return true', () => {
+      expect(validator('propBooleanFalse', obj, 'not_accepted', '', acceptedErrorMessages, '')).toBe(true)
+    })
 
-});
+    test('not_accepted for string false value should return false', () => {
+      expect(validator('propStringFalse', obj, 'not_accepted', '', acceptedErrorMessages, '')).toBe(false)
+    })
+
+    test('accepted should throw an error for arguments passed', () => {
+      expect(() => validator('propBooleanTrue', obj, 'accepted', 'test', acceptedErrorMessages, '')).toThrow(Error)
+    })
+
+    test('not_accepted should throw an error for arguments passed', () => {
+      expect(() => validator('propBooleanFalse', obj, 'not_accepted', 'test', acceptedErrorMessages, '')).toThrow(Error)
+    })
+
+    test('test should throw an error since its not one of supported validation rule of a boolean', () => {
+      expect(() => validator('propBooleanFalse', obj, 'test', '', acceptedErrorMessages, '')).toThrow(Error)
+    })
+  })
+})

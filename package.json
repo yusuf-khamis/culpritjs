@@ -1,9 +1,10 @@
 {
   "name": "culpritjs",
   "description": "JavaScript validation inspired by Laravel validation",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "scripts": {
-    "test": "jest",
+    "pretest": "npm run standard",
+    "test": "jest --coverage",
     "standard": "standard"
   },
   "main": "lib/index.js",
@@ -27,16 +28,23 @@
     "culpritjs"
   ],
   "standard": {
+    "env": [
+      "jest"
+    ],
     "globals": [
       "window"
     ],
     "ignore": [
       "lib/types/array.js",
-      "lib/types/boolean.js",
       "lib/types/date.js",
       "lib/types/number.js",
       "lib/types/string.js",
-      "test/types/*"
+      "test/types/array.js",
+      "test/types/date.js",
+      "test/types/number.js",
+      "test/types/string.js",
+      "test/test.js",
+      "test/validator.js"
     ]
   },
   "devDependencies": {

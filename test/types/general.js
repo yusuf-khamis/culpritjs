@@ -1,74 +1,184 @@
-// const assert = require('jest');
-const validator = require('../../lib/types/general');
-const messages = require('../../lib/messages');
+const validator = require('../../lib/types/general')
+const obj = require('../object')
 
-test('required', () => {
+describe('general', () => {
+  describe('required', () => {
+    const requiredErrorMessages = []
 
-});
+    test('required with zero(0) value should return true', () => {
+      expect(validator('propNumberZero', obj, 'required', '', requiredErrorMessages, '')).toBe(true)
+    })
 
-test('required_if', () => {
+    test('required with any number should return true', () => {
+      expect(validator('propNumberRandom', obj, 'required', '', requiredErrorMessages, '')).toBe(true)
+    })
 
-});
+    test('required with a string with content should return true', () => {
+      expect(validator('propStringRandom', obj, 'required', '', requiredErrorMessages, '')).toBe(true)
+    })
 
-test('required_if', () => {
+    test('required with empty string should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required', '', requiredErrorMessages, '')).toBe(false)
+    })
 
-});
+    test('required with empty array should return false', () => {
+      expect(validator('propArrayEmpty', obj, 'required', '', requiredErrorMessages, '')).toBe(false)
+    })
 
-test('required_if', () => {
+    test('required with string array should return true', () => {
+      expect(validator('propArrayStringFilled', obj, 'required', '', requiredErrorMessages, '')).toBe(true)
+    })
 
-});
+    test('required with undefined should return false', () => {
+      expect(validator('propUndefined', obj, 'required', '', requiredErrorMessages, '')).toBe(false)
+    })
 
-test('required_if', () => {
+    test('required with number array should return true', () => {
+      expect(validator('propArrayNumberFilled', obj, 'required', '', requiredErrorMessages, '')).toBe(true)
+    })
 
-});
+    test('required with array with mixed value types should return true', () => {
+      expect(validator('propArrayMixFilled', obj, 'required', '', requiredErrorMessages, '')).toBe(true)
+    })
 
-test('required_if', () => {
+    test('required with null value should return false', () => {
+      expect(validator('propNull', obj, 'required', '', requiredErrorMessages, '')).toBe(false)
+    })
 
-});
+    test('required with property not defined should return false', () => {
+      expect(validator('notDefined', obj, 'required', '', requiredErrorMessages, '')).toBe(false)
+    })
 
-test('required_if', () => {
+    test('required should throw an error if argument supplied', () => {
+      expect(() => validator('notDefined', obj, 'required', 'test', requiredErrorMessages, '')).toThrow(Error)
+    })
+  })
 
-});
+  describe('required_if', () => {
+    const requiredIfErrorMessages = []
+
+    test('required_if with valid value and a field whose value is present in the values field, values supplied as sub-args array with the same type as field value should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_if', 'propNumberRandom', requiredIfErrorMessages, '', obj.propArrayNumberFilled)).toBe(true)
+    })
+
+    test('required_if with valid value and a field whose value is not present in the values field, values supplied as sub-args array with the same type as field value should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_if', 'propNumberZero', requiredIfErrorMessages, '', obj.propArrayNumberFilled)).toBe(true)
+    })
+
+    test('required_if with empty string value and a field whose value is present in the values field, values supplied as sub-args array with the same type as field value should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required_if', 'propNumberRandom', requiredIfErrorMessages, '', obj.propArrayNumberFilled)).toBe(false)
+    })
+
+    test('required_if with empty string value and a field whose value is not present in the values field, values supplied as sub-args array with the same type as field value should return true', () => {
+      expect(validator('propStringEmpty', obj, 'required_if', 'propNumberZero', requiredIfErrorMessages, '', obj.propArrayNumberFilled)).toBe(true)
+    })
+
+    test('required_if with valid value and a field whose value is present in the values field, values supplied as arguments should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_if', 'propNumberRandom,' + obj.propArrayNumberFilled.join(','), requiredIfErrorMessages, '')).toBe(true)
+    })
+
+    test('required_if with empty string value and a field whose value is present in the values field, values supplied as arguments should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required_if', 'propNumberRandom,' + obj.propArrayNumberFilled.join(','), requiredIfErrorMessages, '')).toBe(false)
+    })
+
+    test('required_if with valid value and a field whose value is not present in the values field, values supplied as arguments should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_if', 'propNumberZero,' + obj.propArrayNumberFilled.join(','), requiredIfErrorMessages, '')).toBe(true)
+    })
+
+    test('required_if with empty string value and a field whose value is not present in the values field, values supplied as arguments should return true', () => {
+      expect(validator('propStringEmpty', obj, 'required_if', 'propNumberZero,' + obj.propArrayNumberFilled.join(','), requiredIfErrorMessages, '')).toBe(true)
+    })
+
+    test('required_if with empty string and a field whose value is present in the values field supplied as sub-args but not in the values field supplied as argument should return true', () => {
+      expect(validator('propStringEmpty', obj, 'required_if', 'propNumberRandom,' + obj.propArrayStringFilled.join(','), requiredIfErrorMessages, '', obj.propArrayNumberFilled)).toBe(true)
+    })
+
+    test('required_if with empty string and a field whose value is present in the values field supplied as arguments but not in the values field supplied as sub-args should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required_if', 'propNumberRandom,' + obj.propArrayNumberFilled.join(','), requiredIfErrorMessages, '', obj.propArrayStringFilled)).toBe(false)
+    })
+
+    test('required_if with valid value and a field whose value is present in the values field, values supplied as sub-args array with the different type as field value should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_if', 'propBooleanTrue', requiredIfErrorMessages, '', obj.propArrayStringFilled)).toBe(true)
+    })
+
+    test('required_if with empty string and a field whose value is present in the values field, values supplied as sub-args array with the different type as field value should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required_if', 'propBooleanTrue', requiredIfErrorMessages, '', obj.propArrayStringFilled)).toBe(false)
+    })
+
+    test('required_if with no arguments should throw an error', () => {
+      expect(() => validator('propNumberZero', obj, 'required_if', '', requiredIfErrorMessages, '')).toThrow(Error)
+    })
+
+    test('required_if with field but no arguments should throw an error', () => {
+      expect(() => validator('propNumberZero', obj, 'required_if', 'propArrayEmpty', requiredIfErrorMessages, '')).toThrow(Error)
+    })
+  })
+
+  describe('required_unless', () => {
+    const requiredUnlessErrorMessages = []
+
+    test('required_unless with valid value and a field whose value is present in the values field, values supplied as sub-args array with the same type as field value should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_unless', 'propNumberRandom', requiredUnlessErrorMessages, '', obj.propArrayNumberFilled)).toBe(true)
+    })
+
+    test('required_unless with valid value and a field whose value is not present in the values field, values supplied as sub-args array with the same type as field value should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_unless', 'propNumberZero', requiredUnlessErrorMessages, '', obj.propArrayNumberFilled)).toBe(true)
+    })
+
+    test('required_unless with empty string value and a field whose value is present in the values field, values supplied as sub-args array with the same type as field value should return true', () => {
+      expect(validator('propStringEmpty', obj, 'required_unless', 'propNumberRandom', requiredUnlessErrorMessages, '', obj.propArrayNumberFilled)).toBe(true)
+    })
+
+    test('required_unless with empty string value and a field whose value is not present in the values field, values supplied as sub-args array with the same type as field value should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required_unless', 'propNumberZero', requiredUnlessErrorMessages, '', obj.propArrayNumberFilled)).toBe(false)
+    })
+
+    test('required_unless with valid value and a field whose value is present in the values field, values supplied as arguments should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_unless', 'propNumberRandom,' + obj.propArrayNumberFilled.join(','), requiredUnlessErrorMessages, '')).toBe(true)
+    })
+
+    test('required_unless with empty string value and a field whose value is present in the values field, values supplied as arguments should return true', () => {
+      expect(validator('propStringEmpty', obj, 'required_unless', 'propNumberRandom,' + obj.propArrayNumberFilled.join(','), requiredUnlessErrorMessages, '')).toBe(true)
+    })
+
+    test('required_unless with valid value and a field whose value is not present in the values field, values supplied as arguments should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_unless', 'propNumberZero,' + obj.propArrayNumberFilled.join(','), requiredUnlessErrorMessages, '')).toBe(true)
+    })
+
+    test('required_unless with empty string value and a field whose value is not present in the values field, values supplied as arguments should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required_unless', 'propNumberZero,' + obj.propArrayNumberFilled.join(','), requiredUnlessErrorMessages, '')).toBe(false)
+    })
+
+    test('required_unless with empty string and a field whose value is present in the values field supplied as sub-args but not in the values field supplied as argument should return false', () => {
+      expect(validator('propStringEmpty', obj, 'required_unless', 'propNumberRandom,' + obj.propArrayStringFilled.join(','), requiredUnlessErrorMessages, '', obj.propArrayNumberFilled)).toBe(false)
+    })
+
+    test('required_unless with empty string and a field whose value is present in the values field supplied as arguments but not in the values field supplied as sub-args should return true', () => {
+      expect(validator('propStringEmpty', obj, 'required_unless', 'propNumberRandom,' + obj.propArrayNumberFilled.join(','), requiredUnlessErrorMessages, '', obj.propArrayStringFilled)).toBe(true)
+    })
+
+    test('required_unless with valid value and a field whose value is present in the values field, values supplied as sub-args array with the different type as field value should return true', () => {
+      expect(validator('propStringRandom', obj, 'required_unless', 'propBooleanTrue', requiredUnlessErrorMessages, '', obj.propArrayStringFilled)).toBe(true)
+    })
+
+    test('required_unless with empty string and a field whose value is present in the values field, values supplied as sub-args array with the different type as field value should return true', () => {
+      expect(validator('propStringEmpty', obj, 'required_unless', 'propBooleanTrue', requiredUnlessErrorMessages, '', obj.propArrayStringFilled)).toBe(true)
+    })
+
+    test('required_unless with no arguments should throw an error', () => {
+      expect(() => validator('propNumberZero', obj, 'required_unless', '', requiredUnlessErrorMessages, '')).toThrow(Error)
+    })
+
+    test('required_unless with field but no arguments should throw an error', () => {
+      expect(() => validator('propNumberZero', obj, 'required_unless', 'propArrayEmpty', requiredUnlessErrorMessages, '')).toThrow(Error)
+    })
+  })
+})
+
+// TODO: finish test for general.js
 
 // describe('general', function () {
-//     let values = [
-//         25, 'test', '123', 123, 'name', 'another', 852, 13
-//     ];
-//     let errorMessages = [];
 //
-//     describe('required', function () {
-//         errorMessages = [];
-//
-//         it('Should return true when required_key is provided', function () {
-//             assert.strictEqual(validator('required_key', { required_key: values[0] }, 'required', '', errorMessages, ''), true);
-//         });
-//
-//         it('Should return false when required_key is not provided', function () {
-//             assert.strictEqual(validator('required_key', { }, 'required', '', errorMessages, ''), false);
-//         });
-//     });
-//
-//     describe('required_if', function () {
-//         errorMessages = [];
-//
-//         const tempValue = 74;
-//
-//         it('Should return true when required_if_field is ' + values[3] + ' and args field in stringified form of ' + values.join(), function () {
-//             assert.strictEqual(validator('required_if_key', { required_if_key: tempValue, required_if_field: values[3] }, 'required_if', 'required_if_field,' + values.join(), errorMessages, ''), true);
-//         });
-//
-//         it('Should return true when required_if_field is ' + values[3] + ' and args field in array form of ' + values.join(), function () {
-//             assert.strictEqual(validator('required_if_key', { required_if_key: tempValue, required_if_field: values[3] }, 'required_if', 'required_if_field', errorMessages, '', values), true);
-//         });
-//
-//         it('Should return true when required_if_field is ' + values[7] + ' but arg field is ' + values[6] + ' and required_if_key not provided', function () {
-//             assert.strictEqual(validator('required_if_key', { required_if_field: values[7] }, 'required_if', 'required_if_field,' + values[6], errorMessages, ''), true);
-//         });
-//
-//         it('Should return false when required_if_key is not provided and required_if_field is ' + values[6] + ' and field args array form of ' + values.join(), function () {
-//             assert.strictEqual(validator('required_if_key', { required_if_field: values[6] }, 'required_if', 'required_if_field', errorMessages, '', values), false);
-//         });
-//     });
 //
 //     describe('required_unless', function () {
 //         errorMessages = [];
