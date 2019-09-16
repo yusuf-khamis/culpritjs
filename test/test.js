@@ -1,14 +1,13 @@
-const assert = require('assert');
-const validator = require('..');
+// const validator = require('..')
 
-require('./types/string');
-require('./types/array');
-require('./types/boolean');
-require('./types/date');
-require('./types/general');
-require('./types/number');
+// require('./types/string')
+// require('./types/array')
+// require('./types/boolean')
+// require('./types/date')
+require('./types/general')
+// require('./types/number')
 
-//TODO: next release (test for general library)
+// TODO: next release (test for general library)
 //
 // describe('general library', function () {
 //     const schema1 = {
