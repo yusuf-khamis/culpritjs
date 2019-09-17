@@ -18,5 +18,6 @@ module.exports = {
   ],
   propArrayMixFilled: [
     'zero', 456, true, 'random'
-  ]
+  ],
+  propValidEmail: 'mail@example.com'
 }
