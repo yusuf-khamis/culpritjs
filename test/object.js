@@ -34,6 +34,6 @@ module.exports = {
   currentDateSlash: now.format('MM/DD/YYYY'),
   currentDateSpace: now.format('MM DD YYYY'),
   pastDateSpace: moment().subtract(5, 'days').format('MM DD YYYY'),
-  futureDateSpace: moment().add(1, 'month').format('MM DD YYYY')
-
+  futureDateSpace: moment().add(1, 'month').format('MM DD YYYY'),
+  invalidMoment: moment(new Date('yes'))
 }
