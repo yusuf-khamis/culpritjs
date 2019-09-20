@@ -35,10 +35,8 @@
       "window"
     ],
     "ignore": [
-      "lib/types/array.js",
       "lib/types/number.js",
       "lib/types/string.js",
-      "test/types/array.js",
       "test/types/number.js",
       "test/types/string.js",
       "test/test.js",
@@ -46,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "form-data": "^2.5.1",
     "jest": "^24.9.0",
     "standard": "^14.3.0"
   },

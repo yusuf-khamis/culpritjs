@@ -20,9 +20,21 @@ module.exports = {
   propArrayNumberFilled: [
     1, 258, 463, 718, 275
   ],
+  propArrayNotDistinct: [
+    25, 14, 25, 36, 87, 36
+  ],
   propArrayMixFilled: [
     'zero', 456, true, 'random'
   ],
+  propStringMixArray: JSON.stringify([
+    'zero', 456, true, 'random'
+  ]),
+  propStringStringArray: JSON.stringify([
+    'yes', 'one', 'random', 'true'
+  ]),
+  propStringNumberArray: JSON.stringify([
+    1, 258, 463, 718, 275
+  ]),
   propValidEmail: 'mail@example.com',
   currentDate: now.toDate(),
   currentMoment: now,

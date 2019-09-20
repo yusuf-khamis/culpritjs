@@ -1,7 +1,7 @@
 // const validator = require('..')
 
 // require('./types/string')
-// require('./types/array')
+require('./types/array')
 require('./types/boolean')
 require('./types/date')
 require('./types/general')
