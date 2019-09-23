@@ -35,18 +35,18 @@
       "window"
     ],
     "ignore": [
-      "lib/types/number.js",
       "lib/types/string.js",
-      "test/types/number.js",
       "test/types/string.js",
       "test/test.js",
-      "test/validator.js"
+      "test/validator.js",
+      "webpack.config.js"
     ]
   },
   "devDependencies": {
     "form-data": "^2.5.1",
     "jest": "^24.9.0",
-    "standard": "^14.3.0"
+    "standard": "^14.3.0",
+    "webpack": "^4.40.2"
   },
   "types": "./index.d.ts"
 }

@@ -5,9 +5,11 @@ const now = moment()
 module.exports = {
   propNumberZero: 0,
   propNumberRandom: 275,
+  propNumberRandomClone: 275,
   propStringEmpty: '',
   propStringRandom: 'yes',
   propUndefined: undefined,
+  propNaN: NaN,
   propNull: null,
   propBooleanFalse: false,
   propBooleanTrue: true,

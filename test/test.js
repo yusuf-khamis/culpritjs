@@ -5,7 +5,7 @@ require('./types/array')
 require('./types/boolean')
 require('./types/date')
 require('./types/general')
-// require('./types/number')
+require('./types/number')
 
 // TODO: next release (test for general library)
 //
