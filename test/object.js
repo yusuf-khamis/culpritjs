@@ -5,6 +5,7 @@ const now = moment()
 module.exports = {
   propNumberZero: 0,
   propNumberRandom: 275,
+  propNumberRandomOther: 30,
   propNumberRandomClone: 275,
   propStringEmpty: '',
   propStringRandom: 'yes',
