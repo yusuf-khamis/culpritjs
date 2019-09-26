@@ -2,6 +2,10 @@ const validator = require('../../lib/types/number')
 const obj = require('../object')
 
 describe('number', function () {
+  it('number_test should throw an error since it is not a valid validation rule of number', () => {
+    expect(() => validator('propNumberRandom', obj, 'number_test', '', [], '')).toThrow(Error)
+  })
+
   describe('between', () => {
     it('between with number value between the number values in the arguments should return true', () => {
       expect(validator('propNumberRandom', obj, 'between', '240,310', [], '')).toBe(true)
@@ -257,11 +261,79 @@ describe('number', function () {
   })
 
   describe('in_array', () => {
-    //
+    it('in_array with number value that exists in the flat number array field provided in argument should return true', () => {
+      expect(validator('propNumberRandom', obj, 'in_array', 'propArrayNumberFilled.*', [], '')).toBe(true)
+    })
+
+    it('in_array with number value that exists in the flat number string array field provided in argument should return true', () => {
+      expect(validator('propNumberRandom', obj, 'in_array', 'propStringNumberArray.*', [], '')).toBe(true)
+    })
+
+    it('in_array with number value that does not exists in the flat number array field provided in argument should return false', () => {
+      expect(validator('propNumberRandom', obj, 'in_array', 'propArrayNotDistinct.*', [], '')).toBe(false)
+    })
+
+    it('in_array with number value that does not exists in the flat number string array field provided in argument should return false', () => {
+      expect(validator('propNumberRandom', obj, 'in_array', 'propStringArrayNotDistinct.*', [], '')).toBe(false)
+    })
+
+    it('in_array with number value that exists in the object array field provided in argument should return true', () => {
+      expect(validator('propNumberRandomOther', obj, 'in_array', 'propObjectArray.*.age', [], '')).toBe(true)
+    })
+
+    it('in_array with number value that exists in the string object array field provided in argument should return true', () => {
+      expect(validator('propNumberRandomOther', obj, 'in_array', 'propObjectArray.*.age', [], '')).toBe(true)
+    })
+
+    it('in_array with number value that does not exists in the object array field provided in argument should return false', () => {
+      expect(validator('propNumberRandom', obj, 'in_array', 'propStringObjectArray.*.age', [], '')).toBe(false)
+    })
+
+    it('in_array with number value that does not exists in the string object array field provided in argument should return false', () => {
+      expect(validator('propNumberRandom', obj, 'in_array', 'propStringObjectArray.*.age', [], '')).toBe(false)
+    })
+
+    it('in_array with valid number value but with argument first part not of type array should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'in_array', 'currentMoment.*', [], '')).toThrow(Error)
+    })
+
+    it('in_array with valid number value but with argument first part not of type array but of type string should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'in_array', 'propValidEmail.*', [], '')).toThrow(Error)
+    })
+
+    it('in_array with valid number value with valid array argument field but only one part of the arguments provided should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'in_array', 'propStringObjectArray', [], '')).toThrow(Error)
+    })
+
+    it('in_array with valid number value but with no arguments provided should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'in_array', '', [], '')).toThrow(Error)
+    })
+
+    it('in_array with valid number value but with multiple arguments provided should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'in_array', 'propObjectArray.*.age,propStringNumberArray.*', [], '')).toThrow(Error)
+    })
+
+    it('in_array with valid number value but with valid flat string number array but with three parts of arguments provided should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'in_array', 'propStringNumberArray.*.age', [], '')).toThrow(Error)
+    })
+
+    it('in_array with valid number value but with valid object string number array but with two parts of arguments provided should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'in_array', 'propObjectArray.*', [], '')).toThrow(Error)
+    })
   })
 
   describe('integer', () => {
-    //
+    it('integer with number value of valid integer value should return true', () => {
+      expect(validator('propNumberRandom', obj, 'integer', '', [], '')).toBe(true)
+    })
+
+    it('integer with number value of invalid integer value should return false', () => {
+      expect(validator('propNumberFloat', obj, 'integer', '', [], '')).toBe(false)
+    })
+
+    it('integer with number value of valid integer value but with arguments should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'integer', 'propNumberFloat', [], '')).toThrow(Error)
+    })
   })
 
   describe('lt', () => {
@@ -427,12 +499,50 @@ describe('number', function () {
   })
 
   describe('same', () => {
-    it('same with number value that is equal to the number value of the argument', () => {
-      expect(validator('propNumberRandom', obj, 'same', obj.propNumberRandomClone, [], '')).toBe(false)
+    it('same with number value that is equal to the number value of the argument field should return true', () => {
+      expect(validator('propNumberRandom', obj, 'same', 'propNumberRandomClone', [], '')).toBe(true)
+    })
+
+    it('same with number value that is not equal to the number value of the argument field should return false', () => {
+      expect(validator('propNumberRandom', obj, 'same', 'propNumberZero', [], '')).toBe(false)
+    })
+
+    it('same with number value and with null argument field value should return false', () => {
+      expect(validator('propNumberRandom', obj, 'same', 'propNull', [], '')).toBe(false)
+    })
+
+    it('same with valid number value but with field argument that does not exist should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'same', 'propNotExists', [], '')).toThrow(Error)
+    })
+
+    it('same with valid number value but with multiple arguments should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'same', 'propNumberZero,propNumberRandomClone', [], '')).toThrow(Error)
+    })
+
+    it('same with valid number value but with no arguments should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'same', '', [], '')).toThrow(Error)
     })
   })
 
   describe('size', () => {
-    //
+    it('size with number value that is equal to the number value of the argument should return true', () => {
+      expect(validator('propNumberZero', obj, 'size', '0', [], '')).toBe(true)
+    })
+
+    it('size with number value that is not equal to the number value of the argument should return false', () => {
+      expect(validator('propNumberRandom', obj, 'size', '0', [], '')).toBe(false)
+    })
+
+    it('size with valid number but with non-number argument value should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'size', 'true', [], '')).toThrow(Error)
+    })
+
+    it('size with valid number but with multiple arguments should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'size', '8,6', [], '')).toThrow(Error)
+    })
+
+    it('size with valid number but with no arguments should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'size', '', [], '')).toThrow(Error)
+    })
   })
 })

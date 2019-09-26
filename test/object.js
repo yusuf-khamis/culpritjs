@@ -7,6 +7,7 @@ module.exports = {
   propNumberRandom: 275,
   propNumberRandomOther: 30,
   propNumberRandomClone: 275,
+  propNumberFloat: 32.45,
   propStringEmpty: '',
   propStringRandom: 'yes',
   propUndefined: undefined,
@@ -38,6 +39,9 @@ module.exports = {
   propStringNumberArray: JSON.stringify([
     1, 258, 463, 718, 275
   ]),
+  propStringArrayNotDistinct: JSON.stringify([
+    25, 14, 25, 36, 87, 36
+  ]),
   propValidEmail: 'mail@example.com',
   currentDate: now.toDate(),
   currentMoment: now,
@@ -50,5 +54,41 @@ module.exports = {
   currentDateSpace: now.format('MM DD YYYY'),
   pastDateSpace: moment().subtract(5, 'days').format('MM DD YYYY'),
   futureDateSpace: moment().add(1, 'month').format('MM DD YYYY'),
-  invalidMoment: moment(new Date('yes'))
+  invalidMoment: moment(new Date('yes')),
+  propObjectArray: [
+    {
+      name: 'abdalla',
+      age: 25
+    },
+    {
+      name: 'nassir',
+      age: 36
+    },
+    {
+      name: 'kadir',
+      age: 12
+    },
+    {
+      name: 'abubakar',
+      age: 30
+    }
+  ],
+  propStringObjectArray: JSON.stringify([
+    {
+      name: 'abdalla',
+      age: 25
+    },
+    {
+      name: 'nassir',
+      age: 36
+    },
+    {
+      name: 'kadir',
+      age: 12
+    },
+    {
+      name: 'abubakar',
+      age: 30
+    }
+  ])
 }
