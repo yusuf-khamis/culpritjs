@@ -35,8 +35,6 @@
       "window"
     ],
     "ignore": [
-      "lib/types/string.js",
-      "test/types/string.js",
       "test/test.js",
       "test/validator.js",
       "webpack.config.js"

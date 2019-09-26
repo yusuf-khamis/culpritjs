@@ -35,12 +35,24 @@ describe('number', function () {
       expect(() => validator('propNumberRandom', obj, 'between', '275', [], '')).toThrow(Error)
     })
 
+    it('between with more than two arguments passed should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'between', '275,320,500', [], '')).toThrow(Error)
+    })
+
     it('between with no arguments passed should throw an error', () => {
       expect(() => validator('propNumberRandom', obj, 'between', '', [], '')).toThrow(Error)
     })
 
     it('between with non-number arguments passed should throw an error', () => {
       expect(() => validator('propNumberRandom', obj, 'between', 'yes,false', [], '')).toThrow(Error)
+    })
+
+    it('between with first non-number arguments passed should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'between', 'five,20', [], '')).toThrow(Error)
+    })
+
+    it('between with second non-number arguments passed should throw an error', () => {
+      expect(() => validator('propNumberRandom', obj, 'between', '5,six', [], '')).toThrow(Error)
     })
   })
 
