@@ -307,14 +307,52 @@ describe('string', () => {
   })
 
   describe('in', () => {
-    //
+    it('in with string value that exists in the list provided as arguments should return true', () => {
+      expect(validator('propStringTrue', obj, 'in', obj.propArrayStringFilled.join(','), [], '')).toBe(true)
+    })
+
+    it('in with string value that exists in the list provided as sub-args without arguments should return true', () => {
+      expect(validator('propStringTrue', obj, 'in', '', [], '', obj.propArrayStringFilled)).toBe(true)
+    })
+
+    it('in with string value that exists in the list provided as sub-args but not in the list provided as arguments should return false', () => {
+      expect(validator('propStringFalse', obj, 'in', obj.propArrayMixFilled.join(','), [], '', obj.propArrayStringFilled)).toBe(false)
+    })
+
+    it('in with string value that does not exists in the list provided as sub-args but exists in the list provided as arguments should return true', () => {
+      expect(validator('propStringTrue', obj, 'in', obj.propArrayStringFilled.join(','), [], '', obj.propArrayMixFilled)).toBe(true)
+    })
+
+    it('in with string value that does not exists in the list provided as sub-args with arguments not provided should return false', () => {
+      expect(validator('propStringTrue', obj, 'in', '', [], '', obj.propArrayMixFilled)).toBe(false)
+    })
+
+    it('in with string value that does not exists in the list provided as arguments with sub-args not provided should return false', () => {
+      expect(validator('propStringFalse', obj, 'in', obj.propArrayMixFilled.join(','), [], '')).toBe(false)
+    })
+
+    it('in with valid string value but without any arguments or sub-args should throw an error', () => {
+      expect(() => validator('propStringTrue', obj, 'in', '', [], '')).toThrow(Error)
+    })
+
+    it('in with valid string value but without any arguments and a non-string array sub-args should throw an error', () => {
+      expect(() => validator('propStringTrue', obj, 'in', '', [], '', obj.futureDate)).toThrow(Error)
+    })
   })
 
   describe('in_array', () => {
     //
   })
 
-  describe('ip', () => {
+  describe('ip_address', () => {
+    //
+  })
+
+  describe('ipv4', () => {
+    //
+  })
+
+  describe('ipv6', () => {
     //
   })
 
@@ -367,11 +405,55 @@ describe('string', () => {
   })
 
   describe('max', () => {
-    //
+    it('max with string length less than the number provided in the argument should return true', () => {
+      expect(validator('propValidEmail', obj, 'max', '120', [], '')).toBe(true)
+    })
+
+    it('max with string length equal to the number provided in the argument should return true', () => {
+      expect(validator('propValidEmail', obj, 'max', String(obj.propValidEmail.length), [], '')).toBe(true)
+    })
+
+    it('max with string length less than the number provided in the argument should return false', () => {
+      expect(validator('propValidEmail', obj, 'max', '5', [], '')).toBe(false)
+    })
+
+    it('max with valid string value and non-number arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'max', obj.propValidEmail, [], '')).toThrow(Error)
+    })
+
+    it('max with valid number value and no arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'max', '', [], '')).toThrow(Error)
+    })
+
+    it('max with valid string value and multiple arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'max', '25,48', [], '')).toThrow(Error)
+    })
   })
 
   describe('min', () => {
-    //
+    it('min with string length less than the number provided in the argument should return false', () => {
+      expect(validator('propValidEmail', obj, 'min', '120', [], '')).toBe(false)
+    })
+
+    it('min with string length equal to the number provided in the argument should return true', () => {
+      expect(validator('propValidEmail', obj, 'min', String(obj.propValidEmail.length), [], '')).toBe(true)
+    })
+
+    it('min with string length less than the number provided in the argument should return true', () => {
+      expect(validator('propValidEmail', obj, 'min', '5', [], '')).toBe(true)
+    })
+
+    it('min with valid string value and non-number arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'min', obj.propValidEmail, [], '')).toThrow(Error)
+    })
+
+    it('min with valid number value and no arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'min', '', [], '')).toThrow(Error)
+    })
+
+    it('min with valid string value and multiple arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'min', '25,48', [], '')).toThrow(Error)
+    })
   })
 
   describe('not_in', () => {
@@ -399,7 +481,29 @@ describe('string', () => {
   })
 
   describe('size', () => {
-    //
+    it('size with string length less than the number provided in the argument should return false', () => {
+      expect(validator('propValidEmail', obj, 'size', '120', [], '')).toBe(false)
+    })
+
+    it('size with string length equal to the number provided in the argument should return true', () => {
+      expect(validator('propValidEmail', obj, 'size', String(obj.propValidEmail.length), [], '')).toBe(true)
+    })
+
+    it('size with string length less than the number provided in the argument should return false', () => {
+      expect(validator('propValidEmail', obj, 'size', '5', [], '')).toBe(false)
+    })
+
+    it('size with valid string value and non-number arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'size', obj.propValidEmail, [], '')).toThrow(Error)
+    })
+
+    it('size with valid number value and no arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'size', '', [], '')).toThrow(Error)
+    })
+
+    it('size with valid string value and multiple arguments should throw an error', () => {
+      expect(() => validator('propValidEmail', obj, 'size', '25,48', [], '')).toThrow(Error)
+    })
   })
 
   describe('starts_with', () => {
@@ -407,7 +511,17 @@ describe('string', () => {
   })
 
   describe('timezone', () => {
-    //
+    it('timezone with valid timezone should return true', () => {
+      expect(validator('timezoneRandom', obj, 'timezone', '', [], '')).toBe(true)
+    })
+
+    it('timezone with invalid timezone should return false', () => {
+      expect(validator('propStringRandomOther6', obj, 'timezone', '', [], '')).toBe(false)
+    })
+
+    it('timezone with valid timezone but with arguments should throw an error', () => {
+      expect(() => validator('uuidV4', obj, 'timezone', 'true', [], '')).toThrow(Error)
+    })
   })
 
   describe('url', () => {
@@ -415,6 +529,20 @@ describe('string', () => {
   })
 
   describe('uuid', () => {
-    //
+    it('uuid with valid uuid v1 should return true', () => {
+      expect(validator('uuidV1', obj, 'uuid', '', [], '')).toBe(true)
+    })
+
+    it('uuid with valid uuid v4 should return true', () => {
+      expect(validator('uuidV4', obj, 'uuid', '', [], '')).toBe(true)
+    })
+
+    it('uuid with invalid uuid should return false', () => {
+      expect(validator('propStringRandomOther6', obj, 'uuid', '', [], '')).toBe(false)
+    })
+
+    it('uuid with valid uuid but with arguments should throw an error', () => {
+      expect(() => validator('uuidV4', obj, 'uuid', 'true', [], '')).toThrow(Error)
+    })
   })
 })

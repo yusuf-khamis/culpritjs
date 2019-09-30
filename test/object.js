@@ -1,6 +1,8 @@
 const moment = require('moment-timezone')
+const { v4, v1 } = require('uuid')
 
 const now = moment()
+const timezones = moment.tz.names()
 
 module.exports = {
   propNumberZero: 0,
@@ -106,5 +108,8 @@ module.exports = {
   stringWithoutMatchingConfirm: 'pl3ntySh@ring',
   stringWithoutMatchingConfirm_confirmation: 'sh@ringPlenty',
   stringValidCardNumber: '4242424242424242',
-  stringInvalidCardNumber: '0123456789654321'
+  stringInvalidCardNumber: '0123456789654321',
+  timezoneRandom: timezones[Math.floor(Math.random() * timezones.length + 1)],
+  uuidV1: v1(),
+  uuidV4: v4()
 }
