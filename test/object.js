@@ -19,6 +19,7 @@ module.exports = {
   propStringRandomOther6: '123-time',
   propStringRandomOther7: '123-time_only',
   propStringRandomOther8: '123',
+  propStringRandomOther9: 'only one',
   propUndefined: undefined,
   propNaN: NaN,
   propNull: null,

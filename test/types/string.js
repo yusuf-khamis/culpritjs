@@ -207,19 +207,103 @@ describe('string', () => {
   })
 
   describe('ends_with', () => {
-    //
+    it('ends_with with string that ends with one of the values in arguments should return true', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', obj.propArrayStringFilled.join(','), [], '')).toBe(true)
+    })
+
+    it('ends_with with string that does not end with one of the values in arguments should return false', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', obj.propArrayMixFilled.join(','), [], '')).toBe(false)
+    })
+
+    it('ends_with with string that ends with one of the values in extra args as json object should return true', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', '', [], '', obj.propArrayStringFilled)).toBe(true)
+    })
+
+    it('ends_with with string that does not end with one of the values in extra args as json object should return false', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', '', [], '', obj.propArrayMixFilled)).toBe(false)
+    })
+
+    it('ends_with with string that ends with one of the values in extra args as json string should return true', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', '', [], '', obj.propStringStringArray)).toBe(true)
+    })
+
+    it('ends_with with string that does not end with one of the values in extra args as json string should return false', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', '', [], '', obj.propStringMixArray)).toBe(false)
+    })
+
+    it('ends_with with string that ends with values in arguments but not in extra args should return true', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', obj.propArrayStringFilled.join(','), [], '', obj.propStringMixArray)).toBe(true)
+    })
+
+    it('ends_with with string that ends with values in extra args but not in arguments should return false', () => {
+      expect(validator('propStringRandomOther9', obj, 'ends_with', obj.propArrayMixFilled.join(','), [], '', obj.propArrayStringFilled)).toBe(false)
+    })
+
+    it('ends_with with valid string but no arguments or extra args should throw an error', () => {
+      expect(() => validator('propStringRandomOther9', obj, 'ends_with', '', [], '')).toThrow(Error)
+    })
+
+    it('ends_with with valid string but no arguments and invalid extra args (not an array) should throw an error', () => {
+      expect(() => validator('propStringRandomOther9', obj, 'ends_with', '', [], '', obj.propValidEmail)).toThrow(Error)
+    })
   })
 
   describe('filled', () => {
-    //
+    it('filled with string that is not empty should return true', () => {
+      expect(validator('propStringRandomOther2', obj, 'filled', '', [], '')).toBe(true)
+    })
+
+    it('filled with string that is empty should return false', () => {
+      expect(validator('propStringEmpty', obj, 'filled', '', [], '')).toBe(false)
+    })
+
+    it('filled with string that is not empty but with arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther2', obj, 'filled', 'filled', [], '')).toThrow(Error)
+    })
   })
 
   describe('gt', () => {
-    //
+    it('gt with string that has length greater than the string in argument field should return true', () => {
+      expect(validator('propStringRandomOther2', obj, 'gt', 'propStringRandom', [], '')).toBe(true)
+    })
+
+    it('gt with string that has length equal to the string in argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'gt', 'propStringRandom', [], '')).toBe(false)
+    })
+
+    it('gt with string that has length less than the string in argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'gt', 'propStringRandomOther2', [], '')).toBe(false)
+    })
+
+    it('gt with valid string but without arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'gt', '', [], '')).toThrow(Error)
+    })
+
+    it('gt with valid string but with multiple arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'gt', 'propStringRandomOther2,propStringRandom', [], '')).toThrow(Error)
+    })
   })
 
   describe('gte', () => {
-    //
+    it('gte with string that has length greater than the string in argument field should return true', () => {
+      expect(validator('propStringRandomOther2', obj, 'gte', 'propStringRandom', [], '')).toBe(true)
+    })
+
+    it('gte with string that has length equal to the string in argument field should return true', () => {
+      expect(validator('propStringRandomClone', obj, 'gte', 'propStringRandom', [], '')).toBe(true)
+    })
+
+    it('gte with string that has length less than the string in argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'gte', 'propStringRandomOther2', [], '')).toBe(false)
+    })
+
+    it('gte with valid string but without arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'gte', '', [], '')).toThrow(Error)
+    })
+
+    it('gte with valid string but with multiple arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'gte', 'propStringRandomOther2,propStringRandom', [], '')).toThrow(Error)
+    })
   })
 
   describe('in', () => {
@@ -239,11 +323,47 @@ describe('string', () => {
   })
 
   describe('lt', () => {
-    //
+    it('lt with string that has length greater than the string in argument field should return false', () => {
+      expect(validator('propStringRandomOther2', obj, 'lt', 'propStringRandom', [], '')).toBe(false)
+    })
+
+    it('lt with string that has length equal to the string in argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'lt', 'propStringRandom', [], '')).toBe(false)
+    })
+
+    it('lt with string that has length less than the string in argument field should return true', () => {
+      expect(validator('propStringRandomClone', obj, 'lt', 'propStringRandomOther2', [], '')).toBe(true)
+    })
+
+    it('lt with valid string but without arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'lt', '', [], '')).toThrow(Error)
+    })
+
+    it('lt with valid string but with multiple arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'lt', 'propStringRandomOther2,propStringRandom', [], '')).toThrow(Error)
+    })
   })
 
   describe('lte', () => {
-    //
+    it('lte with string that has length greater than the string in argument field should return false', () => {
+      expect(validator('propStringRandomOther2', obj, 'lte', 'propStringRandom', [], '')).toBe(false)
+    })
+
+    it('lte with string that has length equal to the string in argument field should return true', () => {
+      expect(validator('propStringRandomClone', obj, 'lte', 'propStringRandom', [], '')).toBe(true)
+    })
+
+    it('lte with string that has length less than the string in argument field should return true', () => {
+      expect(validator('propStringRandomClone', obj, 'lte', 'propStringRandomOther2', [], '')).toBe(true)
+    })
+
+    it('lte with valid string but without arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'lte', '', [], '')).toThrow(Error)
+    })
+
+    it('lte with valid string but with multiple arguments should throw an error', () => {
+      expect(() => validator('propStringRandomClone', obj, 'lte', 'propStringRandomOther2,propStringRandom', [], '')).toThrow(Error)
+    })
   })
 
   describe('max', () => {
