@@ -18,7 +18,7 @@ declare module 'culpritjs' {
     /**
      * validate
      *
-     * Method that validates the object agains't the schema
+     * Method that validates the object against the schema
      *
      * @param object Object with values to be validated
      * @param schema Object with schema to be used for validation
