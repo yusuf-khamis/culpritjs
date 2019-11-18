@@ -50,6 +50,15 @@ describe('array', () => {
     it('between with array with no arguments should throw an error', () => {
       expect(() => validate('propArrayNumberFilled', obj, 'between', '', [], msgObj)).toThrow(Error)
     })
+
+    it('between failing validation with custom error message should result in error messages array containing the message with all tokens replaced with valid values', () => {
+      msgObj.property = definedMessages.array.between
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayNumberFilled', obj, 'between', '10,20', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propArrayNumberFilled').replace(':min', '10').replace(':max', '20'))
+    })
   })
 
   describe('distinct', () => {
@@ -63,6 +72,15 @@ describe('array', () => {
 
     it('distinct with distinct array and arguments should throw an error', () => {
       expect(() => validate('propArrayNumberFilled', obj, 'distinct', 'true', [], msgObj)).toThrow(Error)
+    })
+
+    it('distinct failing validation with custom error message should result in error messages array containing the message with all tokens replaced with valid values', () => {
+      msgObj.property = definedMessages.array.distinct
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayNotDistinct', obj, 'distinct', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propArrayNotDistinct'))
     })
   })
 
