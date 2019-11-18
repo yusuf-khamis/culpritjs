@@ -99,12 +99,12 @@ describe('array', () => {
       expect(validate('propArrayStringFilled', obj, 'gt', 'propUndefined', [], msgObj)).toBe(false)
     })
 
-    it('gt with array value and argument field not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'gt', 'currentDate', [], msgObj)).toThrow(Error)
+    it('gt with array value and argument field not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'gt', 'currentDate', [], msgObj)).toBe(false)
     })
 
-    it('gt with array value and argument field of string but not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'gt', 'propValidEmail', [], msgObj)).toThrow(Error)
+    it('gt with array value and argument field of string but not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'gt', 'propValidEmail', [], msgObj)).toBe(false)
     })
 
     it('gt with array value with no argument should throw an error', () => {
@@ -113,6 +113,24 @@ describe('array', () => {
 
     it('gt with array value with more than one argument should throw an error', () => {
       expect(() => validate('propArrayStringFilled', obj, 'gt', 'propArrayMixFilled,propStringMixArray', [], msgObj)).toThrow(Error)
+    })
+
+    it('gt failing validation with custom message should result in array with the message with all tokens replaced with real values', () => {
+      msgObj.property = definedMessages.array.gt
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayStringFilled', obj, 'gt', 'propArrayNumberFilled', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propArrayStringFilled').replace(':value', 'propArrayNumberFilled'))
+    })
+
+    it('gt invalid argument field value with custom message should result in array with the message with all tokens replaced with real values', () => {
+      msgObj.arg = definedMessages.array.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayStringFilled', obj, 'gt', 'propValidEmail', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propValidEmail'))
     })
   })
 
@@ -149,12 +167,12 @@ describe('array', () => {
       expect(validate('propArrayStringFilled', obj, 'gte', 'propNull', [], msgObj)).toBe(false)
     })
 
-    it('gte with array value and argument field not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'gte', 'currentDate', [], msgObj)).toThrow(Error)
+    it('gte with array value and argument field not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'gte', 'currentDate', [], msgObj)).toBe(false)
     })
 
-    it('gte with array value and argument field of string but not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'gte', 'propValidEmail', [], msgObj)).toThrow(Error)
+    it('gte with array value and argument field of string but not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'gte', 'propValidEmail', [], msgObj)).toBe(false)
     })
 
     it('gte with array value with no argument should throw an error', () => {
@@ -163,6 +181,24 @@ describe('array', () => {
 
     it('gte with array value with more than one argument should throw an error', () => {
       expect(() => validate('propArrayStringFilled', obj, 'gte', 'propArrayMixFilled,propStringMixArray', [], msgObj)).toThrow(Error)
+    })
+
+    it('gte failing validation with custom message should result in array with the message with all tokens replaced with real values', () => {
+      msgObj.property = definedMessages.array.gte
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayStringFilled', obj, 'gte', 'propArrayNumberFilled', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propArrayStringFilled').replace(':value', 'propArrayNumberFilled'))
+    })
+
+    it('gte invalid argument field value with custom message should result in array with the message with all tokens replaced with real values', () => {
+      msgObj.arg = definedMessages.array.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayStringFilled', obj, 'gte', 'currentDate', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'currentDate'))
     })
   })
 
@@ -199,12 +235,12 @@ describe('array', () => {
       expect(validate('propArrayStringFilled', obj, 'lt', 'propNonExists', [], msgObj)).toBe(false)
     })
 
-    it('lt with array value and argument field not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'lt', 'currentDate', [], msgObj)).toThrow(Error)
+    it('lt with array value and argument field not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'lt', 'currentDate', [], msgObj)).toBe(false)
     })
 
-    it('lt with array value and argument field of string but not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'lt', 'propValidEmail', [], msgObj)).toThrow(Error)
+    it('lt with array value and argument field of string but not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'lt', 'propValidEmail', [], msgObj)).toBe(false)
     })
 
     it('lt with array value with no argument should throw an error', () => {
@@ -222,6 +258,15 @@ describe('array', () => {
       validate('propArrayStringFilled', obj, 'lt', 'propStringMixArray', errorMessages, msgObj)
 
       expect(errorMessages).toContain(msgObj.property.replace(':field', 'propArrayStringFilled').replace(':value', 'propStringMixArray'))
+    })
+
+    it('lt invalid argument field value with custom message should result in array with the message with all tokens replaced with real values', () => {
+      msgObj.arg = definedMessages.array.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayStringFilled', obj, 'lt', 'propValidEmail', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propValidEmail'))
     })
   })
 
@@ -258,12 +303,12 @@ describe('array', () => {
       expect(validate('propArrayStringFilled', obj, 'lte', 'propUndefined', [], msgObj)).toBe(false)
     })
 
-    it('lte with array value and argument field not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'lte', 'currentDate', [], msgObj)).toThrow(Error)
+    it('lte with array value and argument field not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'lte', 'currentDate', [], msgObj)).toBe(false)
     })
 
-    it('lte with array value and argument field of string but not an array should throw an error', () => {
-      expect(() => validate('propArrayStringFilled', obj, 'lte', 'propValidEmail', [], msgObj)).toThrow(Error)
+    it('lte with array value and argument field of string but not an array should return false', () => {
+      expect(validate('propArrayStringFilled', obj, 'lte', 'propValidEmail', [], msgObj)).toBe(false)
     })
 
     it('lte with array value with no argument should throw an error', () => {
@@ -272,6 +317,24 @@ describe('array', () => {
 
     it('lte with array value with more than one argument should throw an error', () => {
       expect(() => validate('propArrayStringFilled', obj, 'lte', 'propArrayMixFilled,propStringMixArray', [], msgObj)).toThrow(Error)
+    })
+
+    it('lte failed validation with custom error message should result is error messages array containing the message with all tokens replaced with valid values', () => {
+      msgObj.property = definedMessages.array.lte
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayNumberFilled', obj, 'lte', 'propStringMixArray', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propArrayNumberFilled').replace(':value', 'propStringMixArray'))
+    })
+
+    it('lte invalid argument field value with custom error message should result is error messages array containing the message with all tokens replaced with valid values', () => {
+      msgObj.arg = definedMessages.array.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayStringFilled', obj, 'lte', 'propValidEmail', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propValidEmail'))
     })
   })
 
@@ -368,6 +431,15 @@ describe('array', () => {
 
     it('size with array and more than one argument should throw an error', () => {
       expect(() => validate('propArrayNumberFilled', obj, 'size', '2,5,4', [], msgObj)).toThrow(Error)
+    })
+
+    it('size failed validation with custom error message should result is error messages array containing the message with all tokens replaced with valid values', () => {
+      msgObj.property = definedMessages.array.size
+      errorMessages.splice(0, errorMessages.length)
+
+      validate('propArrayStringFilled', obj, 'size', '10', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propArrayStringFilled').replace(':value', '10'))
     })
   })
 })
