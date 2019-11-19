@@ -470,65 +470,82 @@ describe('string', () => {
     })
   })
 
-  describe.only('in_array', () => {
+  describe('in_array', () => {
     it('in_array with string that exists in the flat string array field provided in argument should return true', () => {
       expect(validator('propStringRandom', obj, 'in_array', 'propArrayStringFilled.*', [], msgObj)).toBe(true)
     })
 
-    it('in_array with string that exists in the flat string string array field provided in argument as boolean should return false', () => {
-      expect(validator('propNumberRandom', obj, 'in_array', 'propStringNumberArray.*', [], msgObj)).toBe(false)
+    it('in_array with string that exists in the flat string array field provided in argument as boolean should return false', () => {
+      expect(validator('propNumberRandom', obj, 'in_array', 'propArrayMixFilled.*', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with string that exists in the flat string string array field provided in argument should return true', () => {
+      expect(validator('propStringRandom', obj, 'in_array', 'propStringStringArray.*', [], msgObj)).toBe(true)
     })
 
     it('in_array with string that does not exists in the flat mix array field provided in argument should return false', () => {
-      expect(validator('propNumberRandom', obj, 'in_array', 'propStringMixArray.*', [], msgObj)).toBe(false)
+      expect(validator('propStringRandomOther8', obj, 'in_array', 'propArrayMixFilled.*', [], msgObj)).toBe(false)
     })
 
-    // it('in_array with string that exists in the object array field provided in argument should return true', () => {
-    //   expect(validator('propNumberRandomOther', obj, 'in_array', 'propObjectArray.*.age', [], msgObj)).toBe(true)
-    // })
-    //
-    // it('in_array with string that exists in the string object array field provided in argument should return true', () => {
-    //   expect(validator('propNumberRandomOther', obj, 'in_array', 'propObjectArray.*.age', [], msgObj)).toBe(true)
-    // })
-    //
-    // it('in_array with string that does not exists in the object array field provided in argument should return false', () => {
-    //   expect(validator('propNumberRandom', obj, 'in_array', 'propStringObjectArray.*.age', [], msgObj)).toBe(false)
-    // })
-    //
-    // it('in_array with string that does not exists in the string object array field provided in argument should return false', () => {
-    //   expect(validator('propNumberRandom', obj, 'in_array', 'propStringObjectArray.*.age', [], msgObj)).toBe(false)
-    // })
-    //
-    // it('in_array with valid string but with argument first part not of type array should throw an error', () => {
-    //   expect(() => validator('propNumberRandom', obj, 'in_array', 'currentMoment.*', [], msgObj)).toThrow(Error)
-    // })
-    //
-    // it('in_array with valid string but with argument first part not of type array but of type string should throw an error', () => {
-    //   expect(() => validator('propNumberRandom', obj, 'in_array', 'propValidEmail.*', [], msgObj)).toThrow(Error)
-    // })
-    //
-    // it('in_array with valid string with valid array argument field but only one part of the arguments provided should throw an error', () => {
-    //   expect(() => validator('propNumberRandom', obj, 'in_array', 'propStringObjectArray', [], msgObj)).toThrow(Error)
-    // })
-    //
-    // it('in_array with valid string but with no arguments provided should throw an error', () => {
-    //   expect(() => validator('propNumberRandom', obj, 'in_array', '', [], msgObj)).toThrow(Error)
-    // })
-    //
-    // it('in_array with valid string but with multiple arguments provided should throw an error', () => {
-    //   expect(() => validator('propNumberRandom', obj, 'in_array', 'propObjectArray.*.age,propStringNumberArray.*', [], msgObj)).toThrow(Error)
-    // })
-    //
-    // it('in_array with valid string but with valid flat string number array but with three parts of arguments provided should throw an error', () => {
-    //   expect(() => validator('propNumberRandom', obj, 'in_array', 'propStringNumberArray.*.age', [], msgObj)).toThrow(Error)
-    // })
-    //
-    // it('in_array with valid string but with valid object string number array but with two parts of arguments provided should throw an error', () => {
-    //   expect(() => validator('propNumberRandom', obj, 'in_array', 'propObjectArray.*', [], msgObj)).toThrow(Error)
-    // })
+    it('in_array with string that does not exists in the flat string mix array field provided in argument should return false', () => {
+      expect(validator('propStringRandomOther8', obj, 'in_array', 'propStringMixArray.*', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with string that exists in the object array field provided in argument should return true', () => {
+      expect(validator('propStringRandomOther10', obj, 'in_array', 'propObjectArray.*.name', [], msgObj)).toBe(true)
+    })
+
+    it('in_array with string that exists in the string object array field provided in argument should return true', () => {
+      expect(validator('propStringRandomOther10', obj, 'in_array', 'propStringObjectArray.*.name', [], msgObj)).toBe(true)
+    })
+
+    it('in_array with string that does not exists in the object array field provided in argument should return false', () => {
+      expect(validator('propValidEmail', obj, 'in_array', 'propStringObjectArray.*.name', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with string that does not exists in the string object array field provided in argument should return false', () => {
+      expect(validator('propValidEmail', obj, 'in_array', 'propStringObjectArray.*.name', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with valid string but with argument not of type array should return false', () => {
+      expect(validator('propValidEmail', obj, 'in_array', 'currentMoment.*', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with valid string but with argument not of type array but of type string should return false', () => {
+      expect(validator('propStringRandomOther2', obj, 'in_array', 'propValidEmail.*', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with valid string with valid array argument field but only one part of the arguments provided should return false', () => {
+      expect(validator('propStringRandomOther2', obj, 'in_array', 'propStringObjectArray', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with valid string but with no arguments provided should throw an error', () => {
+      expect(() => validator('propStringRandomOther2', obj, 'in_array', '', [], msgObj)).toThrow(Error)
+    })
+
+    it('in_array with valid string but with multiple arguments provided should throw an error', () => {
+      expect(() => validator('propStringRandomOther2', obj, 'in_array', 'propObjectArray.*.age,propStringNumberArray.*', [], msgObj)).toThrow(Error)
+    })
+
+    it('in_array with valid string but with valid flat string number array but with three parts of arguments provided should return false', () => {
+      expect(validator('propStringRandom', obj, 'in_array', 'propArrayStringFilled.*.age', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with valid string but with valid object string number array but with two parts of arguments provided should return false', () => {
+      expect(validator('propStringRandomOther10', obj, 'in_array', 'propObjectArray.*', [], msgObj)).toBe(false)
+    })
+
+    it('in_array failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.in_array
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propValidEmail', obj, 'in_array', 'propStringObjectArray.*.name', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propValidEmail').replace(':another', 'propStringObjectArray'))
+    })
   })
 
-  describe('ip_address', () => {
+  describe.only('ip_address', () => {
     //
   })
 

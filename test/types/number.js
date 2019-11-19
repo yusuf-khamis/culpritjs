@@ -294,7 +294,7 @@ describe('number', function () {
     })
 
     it('in_array with number value that exists in the string object array field provided in argument should return true', () => {
-      expect(validator('propNumberRandomOther', obj, 'in_array', 'propObjectArray.*.age', [], '')).toBe(true)
+      expect(validator('propNumberRandomOther', obj, 'in_array', 'propStringObjectArray.*.age', [], '')).toBe(true)
     })
 
     it('in_array with number value that does not exists in the object array field provided in argument should return false', () => {
@@ -305,11 +305,11 @@ describe('number', function () {
       expect(validator('propNumberRandom', obj, 'in_array', 'propStringObjectArray.*.age', [], '')).toBe(false)
     })
 
-    it('in_array with valid number value but with argument first part not of type array should throw an error', () => {
+    it('in_array with valid number value but with argument not of type array should throw an error', () => {
       expect(() => validator('propNumberRandom', obj, 'in_array', 'currentMoment.*', [], '')).toThrow(Error)
     })
 
-    it('in_array with valid number value but with argument first part not of type array but of type string should throw an error', () => {
+    it('in_array with valid number value but with argument not of type array but of type string should throw an error', () => {
       expect(() => validator('propNumberRandom', obj, 'in_array', 'propValidEmail.*', [], '')).toThrow(Error)
     })
 
