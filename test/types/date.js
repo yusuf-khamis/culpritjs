@@ -1,8 +1,11 @@
 const validator = require('../../lib/types/date')
 const obj = require('../object')
 const definedMessages = require('../../lib/messages')
+const moment = require('moment-timezone')
 
 describe('date', () => {
+  const dateFormat = 'MM/DD/YYYY'
+
   const msgObj = {
     property: '',
     arg: ''
@@ -67,11 +70,12 @@ describe('date', () => {
       expect(() => validator('currentDate', obj, 'after', '', [], msgObj, obj.propNumberRandom)).toThrow(Error)
     })
 
-    it.only('after failing validation with custom messages should result in the message contained in the final error messages array', () => {
+    it('after failing validation with custom messages should result in the message contained in the final error messages array', () => {
       msgObj.property = definedMessages.date.after
       errorMessages.splice(0, errorMessages.length)
 
       validator('pastDate', obj, 'after', '', errorMessages, msgObj, obj.currentMoment)
+
       expect(errorMessages).toContain(msgObj.property.replace(':field', 'pastDate').replace(':value', obj.currentMoment.toString()))
     })
   })
@@ -128,6 +132,15 @@ describe('date', () => {
     it('after_or_equal with date value of now but with invalid sub-args of invalid type provided should throw an error', () => {
       expect(() => validator('currentDate', obj, 'after_or_equal', '', [], msgObj, obj.propNumberRandom)).toThrow(Error)
     })
+
+    it('after_or_equal failing validation with custom messages should result in the message contained in the final error messages array', () => {
+      msgObj.property = definedMessages.date.after_or_equal
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('pastDate', obj, 'after_or_equal', '', errorMessages, msgObj, obj.currentMoment)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'pastDate').replace(':value', obj.currentMoment.toString()))
+    })
   })
 
   describe('before', () => {
@@ -181,6 +194,15 @@ describe('date', () => {
 
     it('before with date value of now but with invalid sub-args of invalid type provided should throw an error', () => {
       expect(() => validator('currentDate', obj, 'before', '', [], msgObj, obj.propNumberRandom)).toThrow(Error)
+    })
+
+    it('before failing validation with custom messages should result in the message contained in the final error messages array', () => {
+      msgObj.property = definedMessages.date.before
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('futureDate', obj, 'before', '', errorMessages, msgObj, obj.currentDateSlash)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'futureDate').replace(':value', moment(obj.currentDateSlash, dateFormat).toString()))
     })
   })
 
@@ -236,6 +258,15 @@ describe('date', () => {
     it('before_or_equal with date value of now but with invalid sub-args of invalid type provided should throw an error', () => {
       expect(() => validator('currentDate', obj, 'before_or_equal', '', [], msgObj, obj.propNumberRandom)).toThrow(Error)
     })
+
+    it('before_or_equal failing validation with custom messages should result in the message contained in the final error messages array', () => {
+      msgObj.property = definedMessages.date.before_or_equal
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('futureDate', obj, 'before_or_equal', '', errorMessages, msgObj, obj.currentDateSlash)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'futureDate').replace(':value', moment(obj.currentDateSlash, dateFormat).toString()))
+    })
   })
 
   describe('equals', () => {
@@ -286,6 +317,15 @@ describe('date', () => {
     it('equals with date value of now but with invalid sub-args of invalid type provided should throw an error', () => {
       expect(() => validator('currentDate', obj, 'equals', '', [], msgObj, obj.propNumberRandom)).toThrow(Error)
     })
+
+    it('equals failing validation with custom messages should result in the message contained in the final error messages array', () => {
+      msgObj.property = definedMessages.date.date_equals
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('futureDate', obj, 'equals', '', errorMessages, msgObj, obj.currentDateSlash)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'futureDate').replace(':value', moment(obj.currentDateSlash, dateFormat).toString()))
+    })
   })
 
   describe('format', () => {
@@ -309,8 +349,17 @@ describe('date', () => {
       expect(() => validator('currentDateSlash', obj, 'format', '', [], msgObj, 'MM/DD/YYYY')).toThrow(Error)
     })
 
-    it('format with value passed as not string should throw an error', () => {
-      expect(() => validator('currentDate', obj, 'format', 'MM/DD/YYYY', [], msgObj, 'MM/DD/YYYY')).toThrow(Error)
+    it('format with value passed as not string should return false', () => {
+      expect(validator('currentDate', obj, 'format', 'MM/DD/YYYY', [], msgObj, 'MM/DD/YYYY')).toBe(false)
+    })
+
+    it('format failing validation with custom messages should result in the message contained in the final error messages array', () => {
+      msgObj.property = definedMessages.date.date_equals
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('currentDateDash', obj, 'equals', obj.currentDateSlash, errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'currentDateDash').replace(':value', obj.currentDateSlash))
     })
   })
 })
