@@ -148,10 +148,11 @@ describe('general', () => {
 
       validator('propStringEmpty', obj, 'required_if', 'propNumberRandom', errorMessages, msgObj, obj.propArrayNumberFilled)
 
-      expect(errorMessages).toContain(msgObj.property
-        .replace(':field', 'propStringEmpty')
-        .replace(':another', 'propNumberRandom')
-        .replace(':value', obj.propArrayNumberFilled.join(','))
+      expect(errorMessages).toContain(
+        msgObj.property
+          .replace(':field', 'propStringEmpty')
+          .replace(':another', 'propNumberRandom')
+          .replace(':value', obj.propArrayNumberFilled.join(','))
       )
     })
   })
@@ -223,10 +224,11 @@ describe('general', () => {
 
       validator('propStringEmpty', obj, 'required_unless', 'propNumberZero,' + obj.propArrayNumberFilled.join(','), errorMessages, msgObj)
 
-      expect(errorMessages).toContain(msgObj.property
-        .replace(':field', 'propStringEmpty')
-        .replace(':another', 'propNumberZero')
-        .replace(':value', obj.propArrayNumberFilled.join(','))
+      expect(errorMessages).toContain(
+        msgObj.property
+          .replace(':field', 'propStringEmpty')
+          .replace(':another', 'propNumberZero')
+          .replace(':value', obj.propArrayNumberFilled.join(','))
       )
     })
   })
@@ -274,9 +276,10 @@ describe('general', () => {
 
       validator('propStringEmpty', obj, 'required_with', 'propNumberRandom,propBooleanTrue,propArrayStringFilled', errorMessages, msgObj)
 
-      expect(errorMessages).toContain(msgObj.property
-        .replace(':field', 'propStringEmpty')
-        .replace(':another', 'propNumberRandom,propBooleanTrue,propArrayStringFilled')
+      expect(errorMessages).toContain(
+        msgObj.property
+          .replace(':field', 'propStringEmpty')
+          .replace(':another', 'propNumberRandom,propBooleanTrue,propArrayStringFilled')
       )
     })
   })
@@ -324,9 +327,10 @@ describe('general', () => {
 
       validator('propStringEmpty', obj, 'required_with_all', 'propNumberRandom,propBooleanTrue,propStringFalse', errorMessages, msgObj)
 
-      expect(errorMessages).toContain(msgObj.property
-        .replace(':field', 'propStringEmpty')
-        .replace(':another', 'propNumberRandom,propBooleanTrue,propStringFalse')
+      expect(errorMessages).toContain(
+        msgObj.property
+          .replace(':field', 'propStringEmpty')
+          .replace(':another', 'propNumberRandom,propBooleanTrue,propStringFalse')
       )
     })
   })
@@ -374,9 +378,10 @@ describe('general', () => {
 
       validator('propStringEmpty', obj, 'required_without', 'propNull,propUndefined,propStringEmpty', errorMessages, msgObj)
 
-      expect(errorMessages).toContain(msgObj.property
-        .replace(':field', 'propStringEmpty')
-        .replace(':another', 'propNull,propUndefined,propStringEmpty')
+      expect(errorMessages).toContain(
+        msgObj.property
+          .replace(':field', 'propStringEmpty')
+          .replace(':another', 'propNull,propUndefined,propStringEmpty')
       )
     })
   })
