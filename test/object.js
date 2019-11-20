@@ -23,6 +23,10 @@ module.exports = {
   propStringRandomOther8: '123',
   propStringRandomOther9: 'only one',
   propStringRandomOther10: 'kadir',
+  propStringRandomOther11: 'kadir   ',
+  propStringRandomOther12: '   kadir',
+  propStringRandomOther13: '   kadir   ',
+  propStringRandomOther14: '   ka     d  i       r   ',
   propUndefined: undefined,
   propNaN: NaN,
   propNull: null,
@@ -104,6 +108,14 @@ module.exports = {
       age: 30
     }
   ]),
+  propJsonObject: {
+    firstName: 'first',
+    lastName: 'last'
+  },
+  propStringJsonObject: JSON.stringify({
+    firstName: 'first',
+    lastName: 'last'
+  }),
   stringWithMatchingConfirm: 'SomeT3xt',
   stringWithMatchingConfirm_confirmation: 'SomeT3xt',
   stringWithoutMatchingConfirm: 'pl3ntySh@ring',
@@ -112,5 +124,13 @@ module.exports = {
   stringInvalidCardNumber: '0123456789654321',
   timezoneRandom: timezones[Math.floor(Math.random() * timezones.length + 1)],
   uuidV1: v1(),
-  uuidV4: v4()
+  uuidV4: v4(),
+  ipv4: '125.254.10.5',
+  ipv6: '::1',
+  ipv4_invalid: '10.321.4.800',
+  ipv6_invalid: '200g:0db8:85a3:0h00:0g00:8a2e:0370:7334',
+  url: 'https://yusuf-khamis.github.io/culpritjs/',
+  propRegex: /^[-a-zA-Z]+$/,
+  propStringRegex: '^[-a-zA-Z]+$',
+  propStringRegex2: '^[A-Z]$'
 }

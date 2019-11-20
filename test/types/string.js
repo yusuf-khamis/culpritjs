@@ -167,6 +167,64 @@ describe('string', () => {
     })
   })
 
+  describe.only('clean', () => {
+    it('clean with only spaces argument and end sub-argument should return the value with no trailing spaces', () => {
+      const finalString = obj.propStringRandomOther11.replace(/\s+$/, '')
+
+      validator('propStringRandomOther11', obj, 'clean', 'spaces.end', [], msgObj)
+
+      expect(obj.propStringRandomOther11).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and begin sub-argument should return the value with no preceding spaces', () => {
+      const finalString = obj.propStringRandomOther11.replace(/^\s+/, '')
+
+      validator('propStringRandomOther12', obj, 'clean', 'spaces.begin', [], msgObj)
+
+      expect(obj.propStringRandomOther11).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and both sub-argument should return the value trimmed', () => {
+      const finalString = obj.propStringRandomOther11.trim()
+
+      validator('propStringRandomOther12', obj, 'clean', 'spaces.both', [], msgObj)
+
+      expect(obj.propStringRandomOther11).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and between_single sub-argument should return the value with multiple inside spaces reduced to single spaces', () => {
+      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s{2,}/g, ' ') + obj.propStringRandomOther13.match(/\s*$/)[0]
+
+      validator('propStringRandomOther12', obj, 'clean', 'spaces.between_single', [], msgObj)
+
+      expect(obj.propStringRandomOther13).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and between_none sub-argument should return the value with inside spaces removed', () => {
+      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s+/g, '') + obj.propStringRandomOther13.match(/\s*$/)[0]
+
+      validator('propStringRandomOther12', obj, 'clean', 'spaces.between_none', [], msgObj)
+
+      expect(obj.propStringRandomOther13).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and between_none and begin sub-arguments should return the value with inside and preceding spaces removed', () => {
+      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s+/g, '') + obj.propStringRandomOther13.match(/\s*$/)[0]
+
+      validator('propStringRandomOther12', obj, 'clean', 'spaces.between_none.begin', [], msgObj)
+
+      expect(obj.propStringRandomOther13).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and between_single and end sub-arguments should return the value with inside and trailing spaces removed', () => {
+      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s+/g, '') + obj.propStringRandomOther13.match(/\s*$/)[0]
+
+      validator('propStringRandomOther12', obj, 'clean', 'spaces.end.between_single', [], msgObj)
+
+      expect(obj.propStringRandomOther13).toBe(finalString)
+    })
+  })
+
   describe('confirmed', () => {
     it('confirmed with property with matching confirmation field should return true', () => {
       expect(validator('stringWithMatchingConfirm', obj, 'confirmed', '', [], msgObj)).toBe(true)
@@ -332,6 +390,10 @@ describe('string', () => {
       expect(() => validator('propStringRandomOther9', obj, 'ends_with', '', [], msgObj, obj.propValidEmail)).toThrow(Error)
     })
 
+    it('ends_with with valid string but no arguments and non string and non json object/array should throw an error', () => {
+      expect(() => validator('propStringRandomOther9', obj, 'ends_with', '', [], msgObj, obj.currentMoment)).toThrow(Error)
+    })
+
     it('ends_with failing validation with custom message should result in the message contained in the resulting error messages', () => {
       msgObj.property = definedMessages.string.ends_with
       errorMessages.splice(0, errorMessages.length)
@@ -378,6 +440,14 @@ describe('string', () => {
       expect(validator('propStringRandomClone', obj, 'gt', 'propStringRandomOther2', [], msgObj)).toBe(false)
     })
 
+    it('gt with valid string but with null argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'gt', 'propNull', [], msgObj)).toBe(false)
+    })
+
+    it('gt with valid string but with undefined argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'gt', 'propUndefined', [], msgObj)).toBe(false)
+    })
+
     it('gt with valid string but without arguments should throw an error', () => {
       expect(() => validator('propStringRandomClone', obj, 'gt', '', [], msgObj)).toThrow(Error)
     })
@@ -407,6 +477,14 @@ describe('string', () => {
 
     it('gte with string that has length less than the string in argument field should return false', () => {
       expect(validator('propStringRandomClone', obj, 'gte', 'propStringRandomOther2', [], msgObj)).toBe(false)
+    })
+
+    it('gte with valid string but with null argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'gte', 'propNull', [], msgObj)).toBe(false)
+    })
+
+    it('gte with valid string but with undefined argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'gte', 'propUndefined', [], msgObj)).toBe(false)
     })
 
     it('gte with valid string but without arguments should throw an error', () => {
@@ -515,10 +593,6 @@ describe('string', () => {
       expect(validator('propStringRandomOther2', obj, 'in_array', 'propValidEmail.*', [], msgObj)).toBe(false)
     })
 
-    it('in_array with valid string with valid array argument field but only one part of the arguments provided should return false', () => {
-      expect(validator('propStringRandomOther2', obj, 'in_array', 'propStringObjectArray', [], msgObj)).toBe(false)
-    })
-
     it('in_array with valid string but with no arguments provided should throw an error', () => {
       expect(() => validator('propStringRandomOther2', obj, 'in_array', '', [], msgObj)).toThrow(Error)
     })
@@ -527,12 +601,32 @@ describe('string', () => {
       expect(() => validator('propStringRandomOther2', obj, 'in_array', 'propObjectArray.*.age,propStringNumberArray.*', [], msgObj)).toThrow(Error)
     })
 
-    it('in_array with valid string but with valid flat string number array but with three parts of arguments provided should return false', () => {
+    it('in_array with valid string but with more than 3 parts of arguments provided should throw an error', () => {
+      expect(() => validator('propStringRandomOther2', obj, 'in_array', 'propObjectArray.*.age.name', [], msgObj)).toThrow(Error)
+    })
+
+    it('in_array with valid string but with single part of arguments provided should throw an error', () => {
+      expect(() => validator('propStringRandomOther2', obj, 'in_array', 'propObjectArray', [], msgObj)).toThrow(Error)
+    })
+
+    it('in_array with valid string but with 3 parts of arguments but middle part not being * provided should throw an error', () => {
+      expect(() => validator('propStringRandomOther2', obj, 'in_array', 'propObjectArray.age.define', [], msgObj)).toThrow(Error)
+    })
+
+    it('in_array with valid string but with valid flat string array but with three parts of arguments provided should return false', () => {
       expect(validator('propStringRandom', obj, 'in_array', 'propArrayStringFilled.*.age', [], msgObj)).toBe(false)
     })
 
     it('in_array with valid string but with valid object string number array but with two parts of arguments provided should return false', () => {
       expect(validator('propStringRandomOther10', obj, 'in_array', 'propObjectArray.*', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with valid string but with null argument field should return false', () => {
+      expect(validator('propStringRandomOther10', obj, 'in_array', 'propNull.*', [], msgObj)).toBe(false)
+    })
+
+    it('in_array with valid string but with undefined argument field should return false', () => {
+      expect(validator('propStringRandomOther10', obj, 'in_array', 'propUndefined.*', [], msgObj)).toBe(false)
     })
 
     it('in_array failing validation with custom message should result in the message contained in the resulting error messages', () => {
@@ -545,20 +639,116 @@ describe('string', () => {
     })
   })
 
-  describe.only('ip_address', () => {
-    //
+  describe('ip_address', () => {
+    it('ip_address with valid ipv4 should return true', () => {
+      expect(validator('ipv4', obj, 'ip_address', '', [], msgObj)).toBe(true)
+    })
+
+    it('ip_address with valid ipv6 should return true', () => {
+      expect(validator('ipv6', obj, 'ip_address', '', [], msgObj)).toBe(true)
+    })
+
+    it('ip_address with invalid ipv4 should return true', () => {
+      expect(validator('ipv4_invalid', obj, 'ip_address', '', [], msgObj)).toBe(false)
+    })
+
+    it('ip_address with invalid ipv6 should return false', () => {
+      expect(validator('ipv6_invalid', obj, 'ip_address', '', [], msgObj)).toBe(false)
+    })
+
+    it('ip_address with valid ipv4 but with arguments should throw an error', () => {
+      expect(() => validator('ipv4', obj, 'ip_address', 'ipv6', [], msgObj)).toThrow(Error)
+    })
+
+    it('ip_address failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.ip_address
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('ipv6_invalid', obj, 'ip_address', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'ipv6_invalid'))
+    })
   })
 
   describe('ipv4', () => {
-    //
+    it('ipv4 with valid ipv4 should return true', () => {
+      expect(validator('ipv4', obj, 'ipv4', '', [], msgObj)).toBe(true)
+    })
+
+    it('ipv4 with invalid ipv4 should return true', () => {
+      expect(validator('ipv4_invalid', obj, 'ipv4', '', [], msgObj)).toBe(false)
+    })
+
+    it('ipv4 with valid ipv4 but with arguments should throw an error', () => {
+      expect(() => validator('ipv4', obj, 'ipv4', 'args', [], msgObj)).toThrow(Error)
+    })
+
+    it('ipv4 failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.ipv4
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('ipv4_invalid', obj, 'ipv4', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'ipv4_invalid'))
+    })
   })
 
   describe('ipv6', () => {
-    //
+    it('ipv6 with valid ipv6 should return true', () => {
+      expect(validator('ipv6', obj, 'ipv6', '', [], msgObj)).toBe(true)
+    })
+
+    it('ipv6 with invalid ipv6 should return false', () => {
+      expect(validator('ipv6_invalid', obj, 'ipv6', '', [], msgObj)).toBe(false)
+    })
+
+    it('ipv6 with valid ipv6 but with arguments should throw an error', () => {
+      expect(() => validator('ipv6', obj, 'ipv6', 'args', [], msgObj)).toThrow(Error)
+    })
+
+    it('ipv6 failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.ipv6
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('ipv6_invalid', obj, 'ip_address', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'ipv6_invalid'))
+    })
   })
 
   describe('json', () => {
-    //
+    it('json with valid json should return true', () => {
+      expect(validator('propJsonObject', obj, 'json', '', [], msgObj)).toBe(true)
+    })
+
+    it('json with valid json array should return true', () => {
+      expect(validator('propObjectArray', obj, 'json', '', [], msgObj)).toBe(true)
+    })
+
+    it('json with valid json string should return true', () => {
+      expect(validator('propStringJsonObject', obj, 'json', '', [], msgObj)).toBe(true)
+    })
+
+    it('json with valid json array string should return true', () => {
+      expect(validator('propStringObjectArray', obj, 'json', '', [], msgObj)).toBe(true)
+    })
+
+    it('json with invalid json object should return false', () => {
+      expect(validator('propValidEmail', obj, 'json', '', [], msgObj)).toBe(false)
+    })
+
+    it('json with valid json object but with arguments should throw an error', () => {
+      expect(() => validator('propStringJsonObject', obj, 'json', 'propObjectArray', [], msgObj)).toThrow(Error)
+    })
+
+    it('json failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.json
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propValidEmail', obj, 'json', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propValidEmail'))
+    })
   })
 
   describe('lt', () => {
@@ -572,6 +762,14 @@ describe('string', () => {
 
     it('lt with string that has length less than the string in argument field should return true', () => {
       expect(validator('propStringRandomClone', obj, 'lt', 'propStringRandomOther2', [], msgObj)).toBe(true)
+    })
+
+    it('lt with valid string but with null argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'lt', 'propNull', [], msgObj)).toBe(false)
+    })
+
+    it('lt with valid string but with undefined argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'lt', 'propUndefined', [], msgObj)).toBe(false)
     })
 
     it('lt with valid string but without arguments should throw an error', () => {
@@ -594,6 +792,14 @@ describe('string', () => {
 
     it('lte with string that has length less than the string in argument field should return true', () => {
       expect(validator('propStringRandomClone', obj, 'lte', 'propStringRandomOther2', [], msgObj)).toBe(true)
+    })
+
+    it('lte with valid string but with null argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'lte', 'propNull', [], msgObj)).toBe(false)
+    })
+
+    it('lte with valid string but with undefined argument field should return false', () => {
+      expect(validator('propStringRandomClone', obj, 'lte', 'propUndefined', [], msgObj)).toBe(false)
     })
 
     it('lte with valid string but without arguments should throw an error', () => {
@@ -658,27 +864,245 @@ describe('string', () => {
   })
 
   describe('not_in', () => {
-    //
+    it('not_in with string value that exists in the list provided as arguments should return false', () => {
+      expect(validator('propStringTrue', obj, 'not_in', obj.propArrayStringFilled.join(','), [], msgObj)).toBe(false)
+    })
+
+    it('not_in with string value that exists in the list provided as sub-args without arguments should return false', () => {
+      expect(validator('propStringTrue', obj, 'not_in', '', [], msgObj, obj.propArrayStringFilled)).toBe(false)
+    })
+
+    it('not_in with string value that exists in the list provided as sub-args but not in the list provided as arguments should return true', () => {
+      expect(validator('propStringFalse', obj, 'not_in', obj.propArrayMixFilled.join(','), [], msgObj, obj.propArrayStringFilled)).toBe(true)
+    })
+
+    it('not_in with string value that does not exists in the list provided as sub-args but exists in the list provided as arguments should return false', () => {
+      expect(validator('propStringTrue', obj, 'not_in', obj.propArrayStringFilled.join(','), [], msgObj, obj.propArrayMixFilled)).toBe(false)
+    })
+
+    it('not_in with string value that does not exists in the list provided as sub-args with arguments not provided should return true', () => {
+      expect(validator('propStringTrue', obj, 'not_in', '', [], msgObj, obj.propArrayMixFilled)).toBe(true)
+    })
+
+    it('not_in with string value that does not exists in the list provided as arguments with sub-args not provided should return true', () => {
+      expect(validator('propStringFalse', obj, 'not_in', obj.propArrayMixFilled.join(','), [], msgObj)).toBe(true)
+    })
+
+    it('not_in with valid string value but without any arguments or sub-args should throw an error', () => {
+      expect(() => validator('propStringTrue', obj, 'not_in', '', [], msgObj)).toThrow(Error)
+    })
+
+    it('not_in with valid string value but without any arguments and a non-string array sub-args should throw an error', () => {
+      expect(() => validator('propStringTrue', obj, 'not_in', '', [], msgObj, obj.futureDate)).toThrow(Error)
+    })
+
+    it('not_in failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.not_in
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringTrue', obj, 'not_in', obj.propArrayStringFilled.join(','), errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringTrue').replace(':value', obj.propArrayStringFilled.join(',')))
+    })
   })
 
   describe('not_regex', () => {
-    //
+    it('not_regex with string value that matches the regex in the argument should return false', () => {
+      expect(validator('propStringRandomOther3', obj, 'not_regex', obj.propStringRegex, [], msgObj)).toBe(false)
+    })
+
+    it('not_regex with string value that matches the regex in the sub args should return false', () => {
+      expect(validator('propStringRandomOther3', obj, 'not_regex', '', [], msgObj, obj.propRegex)).toBe(false)
+    })
+
+    it('not_regex with string value that matches the string regex in the sub args should return false', () => {
+      expect(validator('propStringRandomOther3', obj, 'not_regex', '', [], msgObj, obj.propStringRegex)).toBe(false)
+    })
+
+    it('not_regex with string value that does not match the regex in the argument should return true', () => {
+      expect(validator('propStringRandomOther9', obj, 'not_regex', obj.propStringRegex, [], msgObj)).toBe(true)
+    })
+
+    it('not_regex with string value that does not match the regex in the sub args should return true', () => {
+      expect(validator('propStringRandomOther9', obj, 'not_regex', '', [], msgObj, obj.propRegex)).toBe(true)
+    })
+
+    it('not_regex with string value that does not match the string regex in the sub args should return true', () => {
+      expect(validator('propStringRandomOther9', obj, 'not_regex', '', [], msgObj, obj.propStringRegex)).toBe(true)
+    })
+
+    it('not_regex with string value that matches the string regex in the sub args but does not match the regex in the arguments should return true', () => {
+      expect(validator('propStringRandomOther3', obj, 'not_regex', obj.propStringRegex2, [], msgObj, obj.propStringRegex)).toBe(true)
+    })
+
+    it('not_regex with string value that does not match the string regex in the sub args but matches the regex in the arguments should return false', () => {
+      expect(validator('propStringRandomOther3', obj, 'not_regex', obj.propStringRegex, [], msgObj, obj.propStringRegex2)).toBe(false)
+    })
+
+    it('not_regex with valid string value but with two arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther3', obj, 'not_regex', '[a-zA-Z]+,[.0-9]+', [], msgObj)).toThrow(Error)
+    })
+
+    it('not_regex with valid string value but with no arguments and no sub args should throw an error', () => {
+      expect(() => validator('propStringRandomOther3', obj, 'not_regex', '', [], msgObj)).toThrow(Error)
+    })
+
+    it('not_regex with valid string value and no arguments but invalid sub args object should throw an error', () => {
+      expect(() => validator('propStringRandomOther3', obj, 'not_regex', '', [], msgObj, obj.futureMoment)).toThrow(Error)
+    })
+
+    it('not_regex failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.not_regex
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther3', obj, 'not_regex', '', errorMessages, msgObj, obj.propStringRegex)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther3').replace(':value', RegExp(obj.propStringRegex).toString()))
+    })
   })
 
   describe('numeric', () => {
-    //
+    it('numeric with a numeric string should return true', () => {
+      expect(validator('propStringRandomOther8', obj, 'numeric', '', [], msgObj)).toBe(true)
+    })
+
+    it('numeric with a non-numeric string should return false', () => {
+      expect(validator('propStringRandomOther7', obj, 'numeric', '', [], msgObj)).toBe(false)
+    })
+
+    it('numeric with a numeric string but with arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther8', obj, 'numeric', 'true', [], msgObj)).toThrow(Error)
+    })
+
+    it('numeric failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.numeric
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther7', obj, 'numeric', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther7'))
+    })
   })
 
   describe('present', () => {
-    //
+    it('present with a string value with content should return true', () => {
+      expect(validator('propStringRandomOther2', obj, 'present', '', [], msgObj)).toBe(true)
+    })
+
+    it('present with empty string should return true', () => {
+      expect(validator('propStringEmpty', obj, 'present', '', [], msgObj)).toBe(true)
+    })
+
+    it('present with null value should return false', () => {
+      expect(validator('propNull', obj, 'present', '', [], msgObj)).toBe(false)
+    })
+
+    it('present with undefined value should return false', () => {
+      expect(validator('propUndefined', obj, 'present', '', [], msgObj)).toBe(false)
+    })
+
+    it('present with empty string but with arguments should throw an error', () => {
+      expect(() => validator('propStringEmpty', obj, 'present', 'false', [], msgObj)).toThrow(Error)
+    })
+
+    it('present failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.present
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propUndefined', obj, 'present', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propUndefined'))
+    })
   })
 
   describe('regex', () => {
-    //
+    it('regex with string value that matches the regex in the argument should return true', () => {
+      expect(validator('propStringRandomOther3', obj, 'regex', obj.propStringRegex, [], msgObj)).toBe(true)
+    })
+
+    it('regex with string value that matches the regex in the sub args should return true', () => {
+      expect(validator('propStringRandomOther3', obj, 'regex', '', [], msgObj, obj.propRegex)).toBe(true)
+    })
+
+    it('regex with string value that matches the string regex in the sub args should return true', () => {
+      expect(validator('propStringRandomOther3', obj, 'regex', '', [], msgObj, obj.propStringRegex)).toBe(true)
+    })
+
+    it('regex with string value that does not match the regex in the argument should return false', () => {
+      expect(validator('propStringRandomOther9', obj, 'regex', obj.propStringRegex, [], msgObj)).toBe(false)
+    })
+
+    it('regex with string value that does not match the regex in the sub args should return false', () => {
+      expect(validator('propStringRandomOther9', obj, 'regex', '', [], msgObj, obj.propRegex)).toBe(false)
+    })
+
+    it('regex with string value that does not match the string regex in the sub args should return false', () => {
+      expect(validator('propStringRandomOther9', obj, 'regex', '', [], msgObj, obj.propStringRegex)).toBe(false)
+    })
+
+    it('regex with string value that matches the string regex in the sub args but does not match the regex in the arguments should return false', () => {
+      expect(validator('propStringRandomOther3', obj, 'regex', obj.propStringRegex2, [], msgObj, obj.propStringRegex)).toBe(false)
+    })
+
+    it('regex with string value that does not match the string regex in the sub args but matches the regex in the arguments should return true', () => {
+      expect(validator('propStringRandomOther3', obj, 'regex', obj.propStringRegex, [], msgObj, obj.propStringRegex2)).toBe(true)
+    })
+
+    it('regex with valid string value but with two arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther3', obj, 'regex', '[a-zA-Z]+,[.0-9]+', [], msgObj)).toThrow(Error)
+    })
+
+    it('regex with valid string value but with no arguments and no sub args should throw an error', () => {
+      expect(() => validator('propStringRandomOther3', obj, 'regex', '', [], msgObj)).toThrow(Error)
+    })
+
+    it('regex with valid string value and no arguments but invalid sub args object should throw an error', () => {
+      expect(() => validator('propStringRandomOther3', obj, 'regex', '', [], msgObj, obj.pastMoment)).toThrow(Error)
+    })
+
+    it('regex failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.regex
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther9', obj, 'regex', '', errorMessages, msgObj, obj.propRegex)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther9').replace(':value', obj.propRegex.toString()))
+    })
   })
 
   describe('same', () => {
-    //
+    it('same with string value that is equal to the argument field should return true', () => {
+      expect(validator('propStringRandom', obj, 'same', 'propStringRandom', [], msgObj)).toBe(true)
+    })
+
+    it('same with string value that is not equal to the argument field should return false', () => {
+      expect(validator('propStringRandom', obj, 'same', 'propStringTrue', [], msgObj)).toBe(false)
+    })
+
+    it('same with string value and with null argument field value should return false', () => {
+      expect(validator('propStringRandom', obj, 'same', 'propNull', [], msgObj)).toBe(false)
+    })
+
+    it('same with valid string value but with field argument that does not exist should return false', () => {
+      expect(validator('propStringRandom', obj, 'same', 'propNotExists', [], msgObj)).toBe(false)
+    })
+
+    it('same with valid string value but with multiple arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther8', obj, 'same', 'propStringTrue,propStringRandomOther4', [], msgObj)).toThrow(Error)
+    })
+
+    it('same with valid string value but with no arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther9', obj, 'same', '', [], msgObj)).toThrow(Error)
+    })
+
+    it('same failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.same
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandom', obj, 'same', 'propNull', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandom').replace(':another', 'propNull'))
+    })
   })
 
   describe('size', () => {
@@ -705,10 +1129,70 @@ describe('string', () => {
     it('size with valid string value and multiple arguments should throw an error', () => {
       expect(() => validator('propValidEmail', obj, 'size', '25,48', [], msgObj)).toThrow(Error)
     })
+
+    it('size failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.size
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propValidEmail', obj, 'size', '5', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propValidEmail').replace(':value', '5'))
+    })
   })
 
   describe('starts_with', () => {
-    //
+    it('starts_with with string that starts with one of the values in arguments should return true', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', obj.propArrayStringFilled.join(','), [], msgObj)).toBe(true)
+    })
+
+    it('starts_with with string that does not start with one of the values in arguments should return false', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', obj.propArrayMixFilled.join(','), [], msgObj)).toBe(false)
+    })
+
+    it('starts_with with string that starts with one of the values in extra args as json object should return true', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', '', [], msgObj, obj.propArrayStringFilled)).toBe(true)
+    })
+
+    it('starts_with with string that does not start with one of the values in extra args as json object should return false', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', '', [], msgObj, obj.propArrayMixFilled)).toBe(false)
+    })
+
+    it('starts_with with string that starts with one of the values in extra args as json string should return true', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', '', [], msgObj, obj.propStringStringArray)).toBe(true)
+    })
+
+    it('starts_with with string that does not start with one of the values in extra args as json string should return false', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', '', [], msgObj, obj.propStringMixArray)).toBe(false)
+    })
+
+    it('starts_with with string that starts with values in arguments but not in extra args should return true', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', obj.propArrayStringFilled.join(','), [], msgObj, obj.propStringMixArray)).toBe(true)
+    })
+
+    it('starts_with with string that starts with values in extra args but not in arguments should return false', () => {
+      expect(validator('propStringRandomOther1', obj, 'starts_with', obj.propArrayMixFilled.join(','), [], msgObj, obj.propArrayStringFilled)).toBe(false)
+    })
+
+    it('starts_with with valid string but no arguments or extra args should throw an error', () => {
+      expect(() => validator('propStringRandomOther1', obj, 'starts_with', '', [], msgObj)).toThrow(Error)
+    })
+
+    it('starts_with with valid string but no arguments and invalid extra args (not an array) should throw an error', () => {
+      expect(() => validator('propStringRandomOther1', obj, 'starts_with', '', [], msgObj, obj.propValidEmail)).toThrow(Error)
+    })
+
+    it('starts_with with valid string but no arguments and a non string and non json object/array should throw an error', () => {
+      expect(() => validator('propStringRandomOther1', obj, 'starts_with', '', [], msgObj, obj.currentMoment)).toThrow(Error)
+    })
+
+    it('starts_with failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.starts_with
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther1', obj, 'starts_with', obj.propArrayMixFilled.join(','), errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther1').replace(':value', obj.propArrayMixFilled.join(',')))
+    })
   })
 
   describe('timezone', () => {
@@ -723,10 +1207,38 @@ describe('string', () => {
     it('timezone with valid timezone but with arguments should throw an error', () => {
       expect(() => validator('uuidV4', obj, 'timezone', 'true', [], msgObj)).toThrow(Error)
     })
+
+    it('timezone failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.timezone
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther6', obj, 'timezone', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther6'))
+    })
   })
 
   describe('url', () => {
-    //
+    it('url with valid url should return true', () => {
+      expect(validator('url', obj, 'url', '', [], msgObj)).toBe(true)
+    })
+
+    it('url with invalid url should return false', () => {
+      expect(validator('uuidV1', obj, 'url', '', [], msgObj)).toBe(false)
+    })
+
+    it('url with valid url but with arguments should throw an error', () => {
+      expect(() => validator('url', obj, 'url', 'url', [], msgObj)).toThrow(Error)
+    })
+
+    it('url failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.url
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('uuidV1', obj, 'url', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'uuidV1'))
+    })
   })
 
   describe('uuid', () => {
@@ -744,6 +1256,15 @@ describe('string', () => {
 
     it('uuid with valid uuid but with arguments should throw an error', () => {
       expect(() => validator('uuidV4', obj, 'uuid', 'true', [], msgObj)).toThrow(Error)
+    })
+
+    it('uuid failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.uuid
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther6', obj, 'uuid', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther6'))
     })
   })
 })
