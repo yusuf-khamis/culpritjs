@@ -167,7 +167,7 @@ describe('string', () => {
     })
   })
 
-  describe.only('clean', () => {
+  describe('clean', () => {
     it('clean with only spaces argument and end sub-argument should return the value with no trailing spaces', () => {
       const finalString = obj.propStringRandomOther11.replace(/\s+$/, '')
 
@@ -193,35 +193,103 @@ describe('string', () => {
     })
 
     it('clean with only spaces argument and between_single sub-argument should return the value with multiple inside spaces reduced to single spaces', () => {
-      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s{2,}/g, ' ') + obj.propStringRandomOther13.match(/\s*$/)[0]
+      const finalString = obj.propStringRandomOther14.match(/^\s*/)[0] + obj.propStringRandomOther14.trim().replace(/\s{2,}/g, ' ') + obj.propStringRandomOther14.match(/\s*$/)[0]
 
-      validator('propStringRandomOther12', obj, 'clean', 'spaces.between_single', [], msgObj)
+      validator('propStringRandomOther14', obj, 'clean', 'spaces.between_single', [], msgObj)
 
-      expect(obj.propStringRandomOther13).toBe(finalString)
+      expect(obj.propStringRandomOther14).toBe(finalString)
     })
 
     it('clean with only spaces argument and between_none sub-argument should return the value with inside spaces removed', () => {
-      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s+/g, '') + obj.propStringRandomOther13.match(/\s*$/)[0]
+      const finalString = obj.propStringRandomOther14.match(/^\s*/)[0] + obj.propStringRandomOther14.trim().replace(/\s+/g, '') + obj.propStringRandomOther14.match(/\s*$/)[0]
 
-      validator('propStringRandomOther12', obj, 'clean', 'spaces.between_none', [], msgObj)
+      validator('propStringRandomOther14', obj, 'clean', 'spaces.between_none', [], msgObj)
 
-      expect(obj.propStringRandomOther13).toBe(finalString)
+      expect(obj.propStringRandomOther14).toBe(finalString)
     })
 
     it('clean with only spaces argument and between_none and begin sub-arguments should return the value with inside and preceding spaces removed', () => {
-      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s+/g, '') + obj.propStringRandomOther13.match(/\s*$/)[0]
+      const finalString = obj.propStringRandomOther14.trim().replace(/\s+/g, '') + obj.propStringRandomOther14.match(/\s*$/)[0]
 
-      validator('propStringRandomOther12', obj, 'clean', 'spaces.between_none.begin', [], msgObj)
+      validator('propStringRandomOther14', obj, 'clean', 'spaces.between_none.begin', [], msgObj)
 
-      expect(obj.propStringRandomOther13).toBe(finalString)
+      expect(obj.propStringRandomOther14).toBe(finalString)
     })
 
-    it('clean with only spaces argument and between_single and end sub-arguments should return the value with inside and trailing spaces removed', () => {
-      const finalString = obj.propStringRandomOther13.match(/^\s*/)[0] + obj.propStringRandomOther13.trim().replace(/\s+/g, '') + obj.propStringRandomOther13.match(/\s*$/)[0]
+    it('clean with only spaces argument and between_none and end sub-arguments should return the value with inside and trailing spaces removed', () => {
+      const finalString = obj.propStringRandomOther14.match(/^\s*/)[0] + obj.propStringRandomOther14.trim().replace(/\s+/g, '')
 
-      validator('propStringRandomOther12', obj, 'clean', 'spaces.end.between_single', [], msgObj)
+      validator('propStringRandomOther14', obj, 'clean', 'spaces.between_none.end', [], msgObj)
 
-      expect(obj.propStringRandomOther13).toBe(finalString)
+      expect(obj.propStringRandomOther14).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and between_single and end sub-arguments should return the value with multiple inside spaces reduced to single spaces and trailing spaces removed', () => {
+      const finalString = obj.propStringRandomOther14.match(/^\s*/)[0] + obj.propStringRandomOther14.trim().replace(/\s+/g, '')
+
+      validator('propStringRandomOther14', obj, 'clean', 'spaces.end.between_single', [], msgObj)
+
+      expect(obj.propStringRandomOther14).toBe(finalString)
+    })
+
+    it('clean with only spaces argument and between_single and begin sub-arguments should return the value with multiple inside spaces reduced to single spaces and preceding spaces removed', () => {
+      const finalString = obj.propStringRandomOther14.trim().replace(/\s+/g, '') + obj.propStringRandomOther14.match(/\s*$/)[0]
+
+      validator('propStringRandomOther14', obj, 'clean', 'spaces.end.between_single', [], msgObj)
+
+      expect(obj.propStringRandomOther14).toBe(finalString)
+    })
+
+    it('clean with spaces argument and three sub-arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther12', obj, 'clean', 'spaces.end.begin.between_single', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean with spaces argument and both between_single and between_none should throw an error', () => {
+      expect(() => validator('propStringRandomOther12', obj, 'clean', 'spaces.end.begin.between_single', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean with only case argument and lower sub-argument should return the value in lower case', () => {
+      const finalString = obj.propStringRandomOther15.toLowerCase()
+
+      validator('propStringRandomOther15', obj, 'clean', 'case.lower', [], msgObj)
+
+      expect(obj.propStringRandomOther15).toBe(finalString)
+    })
+
+    it('clean with only case argument and upper sub-argument should return the value in upper case', () => {
+      const finalString = obj.propStringRandomOther10.toUpperCase()
+
+      validator('propStringRandomOther10', obj, 'clean', 'case.upper', [], msgObj)
+
+      expect(obj.propStringRandomOther10).toBe(finalString)
+    })
+
+    it('clean with only case argument and title sub-argument should return the value in title case', () => {
+      const finalString = obj.propStringRandomOther15.match(/\w+/g).map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
+
+      validator('propStringRandomOther15', obj, 'clean', 'case.title', [], msgObj)
+
+      expect(obj.propStringRandomOther15).toBe(finalString)
+    })
+
+    it('clean with only case argument and no sub-arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther15', obj, 'clean', 'case', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean with only case argument and multiple arguments sub-arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther15', obj, 'clean.upper.lower', 'case', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean with only rem argument to remove all the `a`s in a text should return a value without any `a` in it', () => {
+      const finalString = obj.propStringRandomOther15.replace(/a/g, '')
+
+      validator('propStringRandomOther15', obj, 'clean', 'rem.a', [], msgObj)
+
+      expect(obj.propStringRandomOther15).toBe(finalString)
+    })
+
+    it('clean with only rem argument but without sub-arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther15', obj, 'clean', 'rem', [], msgObj)).toThrow(Error)
     })
   })
 
