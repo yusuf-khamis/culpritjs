@@ -143,6 +143,15 @@ describe('string', () => {
     it('alpha_num_dash with valid alpha numeric characters but with arguments should throw an error', () => {
       expect(() => validator('propStringRandom', obj, 'alpha_num_dash', 'true', [], msgObj)).toThrow(Error)
     })
+
+    it('alpha_num_dash failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.alpha_num_dash
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringMixArray', obj, 'alpha_num_dash', '', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringMixArray'))
+    })
   })
 
   describe('between', () => {
@@ -905,6 +914,24 @@ describe('string', () => {
     it('lt with valid string but with multiple arguments should throw an error', () => {
       expect(() => validator('propStringRandomClone', obj, 'lt', 'propStringRandomOther2,propStringRandom', [], msgObj)).toThrow(Error)
     })
+
+    it('lt failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.gte
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther2', obj, 'lt', 'propStringRandom', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther2').replace(':another', 'propStringRandom'))
+    })
+
+    it('lt failing validation due to missing argument field with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.arg = definedMessages.string.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomClone', obj, 'lt', 'propUndefined', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propUndefined'))
+    })
   })
 
   describe('lte', () => {
@@ -935,6 +962,24 @@ describe('string', () => {
     it('lte with valid string but with multiple arguments should throw an error', () => {
       expect(() => validator('propStringRandomClone', obj, 'lte', 'propStringRandomOther2,propStringRandom', [], msgObj)).toThrow(Error)
     })
+
+    it('lte failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.gte
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomOther2', obj, 'lte', 'propStringRandom', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomOther2').replace(':another', 'propStringRandom'))
+    })
+
+    it('lte failing validation due to missing argument field with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.arg = definedMessages.string.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomClone', obj, 'lte', 'propNull', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propNull'))
+    })
   })
 
   describe('max', () => {
@@ -961,6 +1006,15 @@ describe('string', () => {
     it('max with valid string value and multiple arguments should throw an error', () => {
       expect(() => validator('propValidEmail', obj, 'max', '25,48', [], msgObj)).toThrow(Error)
     })
+
+    it('max failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.gte
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propValidEmail', obj, 'max', '5', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propValidEmail').replace(':value', '5'))
+    })
   })
 
   describe('min', () => {
@@ -986,6 +1040,15 @@ describe('string', () => {
 
     it('min with valid string value and multiple arguments should throw an error', () => {
       expect(() => validator('propValidEmail', obj, 'min', '25,48', [], msgObj)).toThrow(Error)
+    })
+
+    it('max failing validation with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.property = definedMessages.string.gte
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propValidEmail', obj, 'min', '120', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propValidEmail').replace(':value', '120'))
     })
   })
 
