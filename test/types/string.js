@@ -103,6 +103,48 @@ describe('string', () => {
     })
   })
 
+  describe('alpha_num_dash', () => {
+    it('alpha_num with alpha characters should return true', () => {
+      expect(validator('propStringRandom', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with alpha numeric characters should return true', () => {
+      expect(validator('propStringRandomOther4', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with numeric characters should return true', () => {
+      expect(validator('propStringRandomOther8', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with non-alpha numeric characters should return false', () => {
+      expect(validator('propStringMixArray', obj, 'alpha_num_dash', '', [], msgObj)).toBe(false)
+    })
+
+    it('alpha_num_dash with alpha characters and underscore should return true', () => {
+      expect(validator('propStringRandomOther1', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with alpha characters and hyphen should return true', () => {
+      expect(validator('propStringRandomOther3', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with alpha characters and hyphen and underscore should return true', () => {
+      expect(validator('propStringRandomOther2', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with alpha numeric characters and hyphen and underscore should return true', () => {
+      expect(validator('propStringRandomOther7', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with numeric characters and hyphen and underscore should return true', () => {
+      expect(validator('propStringRandomOther17', obj, 'alpha_num_dash', '', [], msgObj)).toBe(true)
+    })
+
+    it('alpha_num_dash with valid alpha numeric characters but with arguments should throw an error', () => {
+      expect(() => validator('propStringRandom', obj, 'alpha_num_dash', 'true', [], msgObj)).toThrow(Error)
+    })
+  })
+
   describe('between', () => {
     it('between with string length between the range in arguments should return true', () => {
       expect(validator('propStringRandom', obj, 'between', '2,5', [], msgObj)).toBe(true)
@@ -245,7 +287,11 @@ describe('string', () => {
     })
 
     it('clean with spaces argument and both between_single and between_none should throw an error', () => {
-      expect(() => validator('propStringRandomOther12', obj, 'clean', 'spaces.end.begin.between_single', [], msgObj)).toThrow(Error)
+      expect(() => validator('propStringRandomOther12', obj, 'clean', 'spaces.between_none.between_single', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean with spaces argument and invalid sub-argument should throw an error', () => {
+      expect(() => validator('propStringRandomOther12', obj, 'clean', 'spaces.random', [], msgObj)).toThrow(Error)
     })
 
     it('clean with only case argument and lower sub-argument should return the value in lower case', () => {
@@ -276,8 +322,12 @@ describe('string', () => {
       expect(() => validator('propStringRandomOther15', obj, 'clean', 'case', [], msgObj)).toThrow(Error)
     })
 
-    it('clean with only case argument and multiple arguments sub-arguments should throw an error', () => {
-      expect(() => validator('propStringRandomOther15', obj, 'clean.upper.lower', 'case', [], msgObj)).toThrow(Error)
+    it('clean with only case argument and invalid sub-arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther15', obj, 'clean', 'case.random', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean with only case argument and multiple sub-arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther15', obj, 'clean', 'case.upper.lower', [], msgObj)).toThrow(Error)
     })
 
     it('clean with only rem argument to remove all the `a`s in a text should return a value without any `a` in it', () => {
@@ -290,6 +340,14 @@ describe('string', () => {
 
     it('clean with only rem argument but without sub-arguments should throw an error', () => {
       expect(() => validator('propStringRandomOther15', obj, 'clean', 'rem', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean without any arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther15', obj, 'clean', '', [], msgObj)).toThrow(Error)
+    })
+
+    it('clean without invalid arguments should throw an error', () => {
+      expect(() => validator('propStringRandomOther15', obj, 'clean', 'random', [], msgObj)).toThrow(Error)
     })
   })
 
@@ -638,11 +696,11 @@ describe('string', () => {
     })
 
     it('in_array with string that exists in the object array field provided in argument should return true', () => {
-      expect(validator('propStringRandomOther10', obj, 'in_array', 'propObjectArray.*.name', [], msgObj)).toBe(true)
+      expect(validator('propStringRandomOther18', obj, 'in_array', 'propObjectArray.*.name', [], msgObj)).toBe(true)
     })
 
     it('in_array with string that exists in the string object array field provided in argument should return true', () => {
-      expect(validator('propStringRandomOther10', obj, 'in_array', 'propStringObjectArray.*.name', [], msgObj)).toBe(true)
+      expect(validator('propStringRandomOther18', obj, 'in_array', 'propStringObjectArray.*.name', [], msgObj)).toBe(true)
     })
 
     it('in_array with string that does not exists in the object array field provided in argument should return false', () => {

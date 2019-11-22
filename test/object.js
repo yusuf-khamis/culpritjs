@@ -29,6 +29,8 @@ module.exports = {
   propStringRandomOther14: '   ka     d  i       r   ',
   propStringRandomOther15: 'wOw aN AmaZiNg TeXt',
   propStringRandomOther16: 'SOME TEXT',
+  propStringRandomOther17: '12-3_4',
+  propStringRandomOther18: 'abubakar',
   propUndefined: undefined,
   propNaN: NaN,
   propNull: null,
