@@ -599,6 +599,15 @@ describe('string', () => {
 
       expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomClone').replace(':another', 'propStringRandom'))
     })
+
+    it('gt failing validation and undefined argument field with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.arg = definedMessages.string.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomClone', obj, 'gt', 'propNull', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propNull'))
+    })
   })
 
   describe('gte', () => {
@@ -637,6 +646,15 @@ describe('string', () => {
       validator('propStringRandomClone', obj, 'gte', 'propStringRandomOther2', errorMessages, msgObj)
 
       expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandomClone').replace(':another', 'propStringRandomOther2'))
+    })
+
+    it('gte failing validation due to missing argument field with custom message should result in the message contained in the resulting error messages', () => {
+      msgObj.arg = definedMessages.string.arg
+      errorMessages.splice(0, errorMessages.length)
+
+      validator('propStringRandomClone', obj, 'gte', 'propNull', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propNull'))
     })
   })
 
@@ -1288,9 +1306,18 @@ describe('string', () => {
       msgObj.property = definedMessages.string.same
       errorMessages.splice(0, errorMessages.length)
 
+      validator('propStringRandom', obj, 'same', 'propStringTrue', errorMessages, msgObj)
+
+      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandom').replace(':another', 'propStringTrue'))
+    })
+
+    it('same with valid string but with undefined argument field should result in the message contained in the resulting error messages', () => {
+      msgObj.arg = definedMessages.string.arg
+      errorMessages.splice(0, errorMessages.length)
+
       validator('propStringRandom', obj, 'same', 'propNull', errorMessages, msgObj)
 
-      expect(errorMessages).toContain(msgObj.property.replace(':field', 'propStringRandom').replace(':another', 'propNull'))
+      expect(errorMessages).toContain(msgObj.arg.replace(':arg', 'propNull'))
     })
   })
 
